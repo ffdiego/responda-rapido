@@ -1,30 +1,57 @@
-import { useEffect, useRef, useState } from "react";
+import { AnimalChoice, SubjectButton, Subjects } from "./components/lobby";
+import { useEffect, useState, useContext } from "react";
+import { socket } from "./components/socket";
 
 function Lobby() {
-  const subjectsTemplate = {
-    INGLES: false,
-    PORTUGUES: false,
-    CIENCIAS: false,
-    MATEMATICA: false,
-    GEOGRAFIA: false,
-    HISTORIA: false,
-    VARIEDADES: false,
-  };
-  const [subjects, setSubjects] = useState(subjectsTemplate);
+  const [name, setName] = useState("");
+  const [subjects, setSubjects] = useState([]);
+  const [avatar, setAvatar] = useState("");
 
   useEffect(() => {
     const localSubjects = JSON.parse(localStorage.getItem("milhao-subjects"));
+    const localName = localStorage.getItem("milhao-name");
+    const localAvatar = localStorage.getItem("milhao-avatar");
     if (localSubjects) setSubjects(localSubjects);
+    if (localName) setName(localName);
+    if (localAvatar) setAvatar(localAvatar);
+  }, []);
+
+  useEffect(() => {
+    socket.on("disconnect", () => {
+      console.log("disconnected");
+    });
+
+    socket.on("uuid-change", (uuid) => {
+      console.log("uuid-change", uuid);
+      localStorage.setItem("uuid", uuid);
+    });
+
+    return () => {
+      socket.off();
+    };
   }, []);
 
   function handleSubjectChange(subject) {
-    const newSubjects = { ...subjects, [subject]: !subjects[subject] };
-    setSubjects(newSubjects);
-    localStorage.setItem("milhao-subjects", JSON.stringify(newSubjects));
+    if (subjects.includes(subject)) {
+      setSubjects(subjects.filter((s) => s !== subject));
+    } else {
+      setSubjects([...subjects, subject]);
+    }
   }
 
-  function handlePlayButton(e) {
-    //get all checked inputs in the form
+  function handlePlayButton() {
+    console.log("vou jogar!");
+    const payload = {
+      name,
+      avatar,
+      subjects,
+      uuid: localStorage.getItem("uuid"),
+    };
+    socket.emit("play", payload);
+
+    localStorage.setItem("milhao-name", name);
+    localStorage.setItem("milhao-subjects", JSON.stringify(subjects));
+    localStorage.setItem("milhao-avatar", avatar);
   }
 
   return (
@@ -32,53 +59,42 @@ function Lobby() {
       <div className="max-w-3xl mx-auto flex flex-col h-screen px-2">
         <div className="my-2 text-3xl w-full text-center">
           <h1 className="font-extrabold border-t-4 border-b-4 rounded">
-            Perguntas!
+            Responda, Rápido!
           </h1>
         </div>
         <div className="flex flex-col mt-2">
           <input
-            className="py-2 px-3 rounded ring-color3 ring-offset-1 focus:ring-4 ring-opacity-85 duration-200 outline-none"
+            className="py-2 px-3 rounded ring-color3 ring-offset-1 focus:ring-4 ring-opacity-85 duration-200 outline-none text-center text-xl"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            maxLength={10}
             placeholder="Nome"
             type="text"
           />
-          <button
-            className="box-border mt-2 py-2 px-3 bg-color3 text-white rounded ring-white ring-offset-1 active:ring-4 duration-200"
-            onClick={handlePlayButton}
-          >
-            Jogar
-          </button>
         </div>
-
-        <div className="mt-2 flex flex-wrap w-full gap-1 justify-between">
-          {Object.keys(subjectsTemplate).map((subject) => (
-            <SubjectButton
-              key={subject}
-              subject={subject}
-              checked={subjects[subject]}
+        <div className="box-border border-4 border-color3 bg-color3 bg-opacity-40 mt-2 py-2 px-1 rounded-xl drop-shadow-lg">
+          <h1 className="text-center text-white">Escolha as matérias</h1>
+          <div className="mt-2 flex flex-wrap w-full gap-1 justify-evenly">
+            <Subjects
+              subjects={subjects}
               handleSubjectChange={handleSubjectChange}
             />
-          ))}
+          </div>
         </div>
+        <AnimalChoice avatar={avatar} setAvatar={setAvatar} />
+        <button
+          className={`box-border mt-10 py-2 px-3 bg-color3 text-white text-xl rounded ring-white ring-offset-1 active:ring-4 duration-200 ${
+            !avatar || !name || subjects.length === 0
+              ? "opacity-50 cursor-not-allowed"
+              : ""
+          }`}
+          onClick={handlePlayButton}
+        >
+          Jogar
+        </button>
       </div>
     </div>
   );
 }
-
-function SubjectButton({ subject, checked, handleSubjectChange }) {
-  return (
-    <div
-      className={`basis-[32%] border-4 rounded-lg text-center py-2 bg-white border-color3 duration-500 ${
-        checked && "bg-color3"
-      }`}
-      onClick={() => handleSubjectChange(subject)}
-    >
-      <p className={`w-full text-sm md:text-base ${checked && "text-white"}`}>
-        {subject}
-      </p>
-    </div>
-  );
-}
-
-function PlayersList({ Players }) {}
 
 export default Lobby;

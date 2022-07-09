@@ -1,10 +1,34 @@
+import { useEffect, useState } from "react";
+import { BsStopwatch } from "react-icons/bs";
+
 function Play() {
-  const placar = true;
+  const [time, setTime] = useState(30);
+
+  useEffect(() => {
+    const localTime = localStorage.getItem("milhao-time");
+    if (localTime) setTime(localTime - 1);
+  }, []);
+
+  useEffect(() => {
+    if (time <= 0) {
+      localStorage.removeItem("milhao-time");
+      return;
+    }
+    const timer = setInterval(function () {
+      setTime(time - 1);
+      localStorage.setItem("milhao-time", time);
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [time]);
+
   return (
     <div className="bg-color1">
-      <div className="max-w-3xl mx-auto flex flex-col h-screen">
-        <TopBar name="Diego" connection="OK" />
-        {(!placar && <Main />) || <Placar />}
+      <div className="max-w-3xl mx-auto flex flex-col h-screen p-1">
+        <TopBar name="Diego" time={time} />
+        <Main />
       </div>
     </div>
   );
@@ -22,34 +46,11 @@ function Main() {
   );
 }
 
-function Placar() {
-  return (
-    <div>
-      <h1>RODADA 01</h1>
-      <h2>2 MIL</h2>
-      <ul>
-        <li>
-          <p>Jogador 1</p>
-          <p>R$0</p>
-        </li>
-        <li>
-          <p>Idiota com sorte</p>
-          <p>R$100</p>
-        </li>
-        <li>
-          <p>Imbecil sem sorte</p>
-          <p>R$0</p>
-        </li>
-      </ul>
-    </div>
-  );
-}
-
 function Alternativa({ texto, id }) {
   return (
     <button
       id={id}
-      className="font-semibold text-lg border-4 border-color3 rounded-2xl cursor-pointer bg-white h-full w-full duration-200 outline-none
+      className="font-semibold text-lg border-4 border-color3 rounded-2xl cursor-pointer bg-white h-12 w-full overflow-hidden duration-200 outline-none
       shadow-[0_8px_0px_rgba(0,0,0,0.9)]
       active:translate-y-2 
       active:shadow-[0_0px_0px_rgba(0,0,0,0.9)]
@@ -71,7 +72,7 @@ function Respostas({ alternativas }) {
     };
   }
   return (
-    <div className="flex flex-col justify-center gap-5 flex-1 my-3">
+    <div className="flex flex-col gap-5 flex-1 my-3">
       {Object.keys(alternativas).map((key) => {
         return <Alternativa key={key} texto={alternativas[key]} id={key} />;
       })}
@@ -81,27 +82,21 @@ function Respostas({ alternativas }) {
 
 function Pergunta({ pergunta }) {
   return (
-    <div className="box-border bg-color3 mt-2 py-2 px-1 rounded-xl text-white drop-shadow-lg">
+    <div className="box-border bg-color3 mt-2 py-4 px-6 rounded-xl text-white text-justify drop-shadow-lg">
       <h1>{pergunta}</h1>
-      <h6>
-        Tempo:
-        <span id="tempo-restante">?</span>s
-      </h6>
     </div>
   );
 }
 
-function TopBar({ name, connection }) {
+function TopBar({ name, time }) {
   return (
     <header className="box-border bg-color3 mt-2 py-2 px-1 rounded-xl text-white drop-shadow-lg">
       <div className="flex justify-between font-extrabold">
         <h3>{name}</h3>
-        <h3>
-          Connection:
-          <strong id="status" class="connection-ok">
-            {connection}
-          </strong>
-        </h3>
+        <div className="flex items-center">
+          <p className="text-lg mr-2">{time}</p>
+          <BsStopwatch className="text-xl text-white" />
+        </div>
       </div>
     </header>
   );
