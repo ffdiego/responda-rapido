@@ -1,7 +1,9 @@
 import io from "socket.io-client";
 
-export const socket = io();
+const production = process.env.NODE_ENV === "production";
 
-socket.on("connect", () => {
-  console.log("conndected");
-});
+let address = "";
+if (!production) {
+  address = ":3001";
+}
+export const socket = io(address);

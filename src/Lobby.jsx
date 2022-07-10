@@ -7,9 +7,6 @@ function Lobby() {
   const [name, setName] = useState("");
   const [subjects, setSubjects] = useState([]);
   const [avatar, setAvatar] = useState("");
-  const [ping, setPing] = useState(0);
-
-  console.log(socket);
 
   useEffect(() => {
     const localSubjects = JSON.parse(localStorage.getItem("milhao-subjects"));
