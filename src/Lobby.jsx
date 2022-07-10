@@ -40,7 +40,6 @@ function Lobby() {
   function sendPing() {
     const time = Date.now();
     console.log("ping", time);
-    setPing(time);
     socket.emit("ping");
   }
 
