@@ -1,6 +1,6 @@
 import io from "socket.io-client";
 
-export const socket = io(":3001");
+export const socket = io();
 
 socket.on("connect", () => {
   console.log("conndected");

@@ -1,9 +1,11 @@
-const { Server } = require("socket.io");
+const express = require("express");
+const app = express();
+const server = require("http").createServer(app);
+const io = require("socket.io")(server);
 const { v4 } = require("uuid");
 
-let port = 3001;
-
-const io = new Server(port, { cors: { origin: "*" } });
+const port = process.env.PORT || 3000;
+app.use(express.static("dist"));
 
 io.on("connection", (socket) => {
   console.log("someone connected");
@@ -16,6 +18,12 @@ io.on("connection", (socket) => {
       socket.emit("uuid-change", uuid);
     }
   });
+
+  socket.on("ping", () => {
+    console.log("received ping");
+    socket.emit("pong");
+  });
 });
 
-console.log("listening on port", port);
+server.listen(port);
+console.log(`Server running on port ${port}`);

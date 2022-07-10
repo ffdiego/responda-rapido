@@ -1,11 +1,15 @@
 import { AnimalChoice, SubjectButton, Subjects } from "./components/lobby";
 import { useEffect, useState, useContext } from "react";
 import { socket } from "./components/socket";
+import { Link } from "react-router-dom";
 
 function Lobby() {
   const [name, setName] = useState("");
   const [subjects, setSubjects] = useState([]);
   const [avatar, setAvatar] = useState("");
+  const [ping, setPing] = useState(0);
+
+  console.log(socket);
 
   useEffect(() => {
     const localSubjects = JSON.parse(localStorage.getItem("milhao-subjects"));
@@ -26,10 +30,22 @@ function Lobby() {
       localStorage.setItem("uuid", uuid);
     });
 
+    socket.on("pong", () => {
+      const pong = Date.now();
+      console.log("pong", pong);
+    });
+
     return () => {
       socket.off();
     };
   }, []);
+
+  function sendPing() {
+    const time = Date.now();
+    console.log("ping", time);
+    setPing(time);
+    socket.emit("ping");
+  }
 
   function handleSubjectChange(subject) {
     if (subjects.includes(subject)) {
@@ -92,6 +108,13 @@ function Lobby() {
         >
           Jogar
         </button>
+        <button
+          className={`box-border mt-10 py-2 px-3 bg-color3 text-white text-xl rounded ring-white ring-offset-1 active:ring-4 duration-200`}
+          onClick={sendPing}
+        >
+          PING!
+        </button>
+        <Link to="/play">/PLAY</Link>
       </div>
     </div>
   );
