@@ -1,13 +1,24 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { BiArrowBack } from "react-icons/bi";
+import { BsStopwatch } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { NormalButton, WhiteButton } from "./buttons";
 
 export default function TopBar() {
   const [name, setName] = useState("");
+  const [time, setTime] = useState(30);
+  const [stopClock, setStopClock] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (time <= 0) return;
+    const timer = setTimeout(() => {
+      if (!stopClock) setTime(time - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [time]);
 
   useEffect(() => {
     const localName = localStorage.getItem("rr-name");
@@ -25,7 +36,12 @@ export default function TopBar() {
             <BiArrowBack className="text-xl text-white " />
           </div>
           <h3 className="text-2xl">{name}</h3>
-          <div></div>
+          <div className="text-2xl flex items-center gap-2">
+            <p key={time} className="animalHappy">
+              {time}
+            </p>
+            <BsStopwatch />
+          </div>
         </div>
       </header>
       {modalOpen && (
