@@ -2,32 +2,10 @@ import { useEffect, useState } from "react";
 import { BsStopwatch } from "react-icons/bs";
 
 function Play() {
-  const [time, setTime] = useState(30);
-
-  useEffect(() => {
-    const localTime = localStorage.getItem("milhao-time");
-    if (localTime) setTime(localTime - 1);
-  }, []);
-
-  useEffect(() => {
-    if (time <= 0) {
-      localStorage.removeItem("milhao-time");
-      return;
-    }
-    const timer = setInterval(function () {
-      setTime(time - 1);
-      localStorage.setItem("milhao-time", time);
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [time]);
-
   return (
     <div className="bg-color1">
       <div className="max-w-3xl mx-auto flex flex-col h-screen p-1">
-        <TopBar name="Diego" time={time} />
+        <TopBar />
         <Main />
       </div>
     </div>

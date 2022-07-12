@@ -29,7 +29,7 @@ if (production) {
 }
 
 io.on("connection", (socket) => {
-  console.log("someone connected");
+  console.log("[CON]", socket.id);
   socket.emit("hello from the ws server!");
 
   socket.on("play", (payload) => {

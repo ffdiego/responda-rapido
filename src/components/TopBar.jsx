@@ -22,7 +22,8 @@ export default function TopBar() {
 
   useEffect(() => {
     const localName = localStorage.getItem("rr-name");
-    if (localName) setName(localName);
+    const localAvatar = localStorage.getItem("rr-avatar");
+    if (localName) setName(localAvatar + localName);
   }, []);
 
   return (

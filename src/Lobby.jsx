@@ -1,12 +1,14 @@
 import { AnimalChoice } from "./components/lobby";
-import { useEffect, useState, useContext } from "react";
-import { socket } from "./components/socket";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import SocketContext from "./context/socketContext";
 
 function Lobby() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
     const localName = localStorage.getItem("rr-name");
@@ -16,6 +18,12 @@ function Lobby() {
   }, []);
 
   useEffect(() => {
+    if (!socket) return;
+
+    socket.on("connect", () => {
+      console.log("connected!");
+    });
+
     socket.on("disconnect", () => {
       console.log("disconnected");
     });
