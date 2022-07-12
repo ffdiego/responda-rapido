@@ -1,13 +1,12 @@
+import { WhiteButton } from "./components/buttons";
+import { Container } from "./components/container";
 import TopBar from "./components/TopBar";
 
 function RoomList() {
   return (
-    <div className="bg-color1">
-      <div className="max-w-3xl mx-auto flex flex-col h-screen p-1">
-        <TopBar name="Diego" />
-        <Main />
-      </div>
-    </div>
+    <Container>
+      <Main />
+    </Container>
   );
 }
 
@@ -20,8 +19,9 @@ function Main() {
   return (
     <div className="bg-color3 mt-2 rounded-xl p-2">
       <h1 className="text-xl text-white">Salas:</h1>
-      {salas.map((item) => (
-        <Sala nome={item.nome} jogadores={item.jogadores} />
+      <WhiteButton>Novo Jogo</WhiteButton>
+      {salas.map((item, index) => (
+        <Sala key={index} nome={item.nome} jogadores={item.jogadores} />
       ))}
     </div>
   );

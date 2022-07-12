@@ -1,18 +1,16 @@
-import { AnimalChoice, SubjectButton, Subjects } from "./components/lobby";
+import { AnimalChoice } from "./components/lobby";
 import { useEffect, useState, useContext } from "react";
 import { socket } from "./components/socket";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Lobby() {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
-  const [subjects, setSubjects] = useState([]);
   const [avatar, setAvatar] = useState("");
 
   useEffect(() => {
-    const localSubjects = JSON.parse(localStorage.getItem("milhao-subjects"));
-    const localName = localStorage.getItem("milhao-name");
-    const localAvatar = localStorage.getItem("milhao-avatar");
-    if (localSubjects) setSubjects(localSubjects);
+    const localName = localStorage.getItem("rr-name");
+    const localAvatar = localStorage.getItem("rr-avatar");
     if (localName) setName(localName);
     if (localAvatar) setAvatar(localAvatar);
   }, []);
@@ -27,21 +25,10 @@ function Lobby() {
       localStorage.setItem("uuid", uuid);
     });
 
-    socket.on("pong", () => {
-      const pong = Date.now();
-      console.log("pong", pong);
-    });
-
     return () => {
       socket.off();
     };
   }, []);
-
-  function sendPing() {
-    const time = Date.now();
-    console.log("ping", time);
-    socket.emit("ping");
-  }
 
   function handleSubjectChange(subject) {
     if (subjects.includes(subject)) {
@@ -56,14 +43,14 @@ function Lobby() {
     const payload = {
       name,
       avatar,
-      subjects,
       uuid: localStorage.getItem("uuid"),
     };
     socket.emit("play", payload);
 
-    localStorage.setItem("milhao-name", name);
-    localStorage.setItem("milhao-subjects", JSON.stringify(subjects));
-    localStorage.setItem("milhao-avatar", avatar);
+    localStorage.setItem("rr-name", name);
+    localStorage.setItem("rr-avatar", avatar);
+
+    navigate("/rooms");
   }
 
   return (
@@ -84,33 +71,19 @@ function Lobby() {
             type="text"
           />
         </div>
-        <div className="box-border border-4 border-color3 bg-color3 bg-opacity-40 mt-2 py-2 px-1 rounded-xl drop-shadow-lg">
-          <h1 className="text-center text-white">Escolha as matérias</h1>
-          <div className="mt-2 flex flex-wrap w-full gap-1 justify-evenly">
-            <Subjects
-              subjects={subjects}
-              handleSubjectChange={handleSubjectChange}
-            />
-          </div>
-        </div>
+
         <AnimalChoice avatar={avatar} setAvatar={setAvatar} />
         <button
           className={`box-border mt-10 py-2 px-3 bg-color3 text-white text-xl rounded ring-white ring-offset-1 active:ring-4 duration-200 ${
-            !avatar || !name || subjects.length === 0
-              ? "opacity-50 cursor-not-allowed"
+            !avatar || name.length <= 2
+              ? "opacity-50 cursor-not-allowed disabled"
               : ""
           }`}
+          disabled={!avatar || name.length <= 2}
           onClick={handlePlayButton}
         >
-          Jogar
+          Entrar
         </button>
-        <button
-          className={`box-border mt-10 py-2 px-3 bg-color3 text-white text-xl rounded ring-white ring-offset-1 active:ring-4 duration-200`}
-          onClick={sendPing}
-        >
-          PING!
-        </button>
-        <Link to="/play">/PLAY</Link>
       </div>
     </div>
   );

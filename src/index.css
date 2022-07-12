@@ -28,10 +28,7 @@ code {
 }
 
 @keyframes grow {
-  25% {
-    transform: scale(0.1);
-  }
-  75% {
+  50% {
     transform: scale(2);
   }
 }

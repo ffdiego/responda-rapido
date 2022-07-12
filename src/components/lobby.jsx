@@ -1,45 +1,3 @@
-export function SubjectButton({ subject, checked, handleSubjectChange }) {
-  return (
-    <button
-      className={`basis-[32%] border-4 rounded-lg text-center py-2 border-color3 duration-500 ${
-        checked ? "bg-color3" : "bg-white"
-      }`}
-      onClick={() => handleSubjectChange(subject)}
-    >
-      <p
-        className={`w-full text-xs md:text-base ${checked ? "text-white" : ""}`}
-      >
-        {subject}
-      </p>
-    </button>
-  );
-}
-
-export function Subjects({ subjects, handleSubjectChange }) {
-  const subjectsTemplate = [
-    "INGLES",
-    "PORTUGUES",
-    "CIENCIAS",
-    "MATEMATICA",
-    "GEOGRAFIA",
-    "HISTORIA",
-    "VARIEDADES",
-  ];
-
-  return (
-    <>
-      {subjectsTemplate.map((subject) => (
-        <SubjectButton
-          key={subject}
-          subject={subject}
-          checked={subjects && subjects?.includes(subject)}
-          handleSubjectChange={handleSubjectChange}
-        />
-      ))}
-    </>
-  );
-}
-
 export function AnimalChoice({ avatar, setAvatar }) {
   const animals = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊"];
 
@@ -51,8 +9,10 @@ export function AnimalChoice({ avatar, setAvatar }) {
           <button
             key={animal}
             onClick={() => setAvatar(animal)}
-            className={`basis-1/4 rounded-lg p-2 border-color3 border-4 duration-500 outline-none ${
-              avatar === animal ? "bg-color3" : ""
+            className={`basis-1/4 rounded-lg p-2 border-color3 border-4 duration-500 outline-none  ${
+              avatar === animal
+                ? "bg-color3"
+                : "hover:bg-color3 hover:bg-opacity-50"
             }`}
           >
             <p
