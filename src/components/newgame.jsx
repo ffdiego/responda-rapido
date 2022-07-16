@@ -31,7 +31,7 @@ export function Subjects({ subjects, handleSubjectChange }) {
 function SubjectButton({ subject, checked, handleSubjectChange }) {
   return (
     <button
-      className={`basis-[32%] border-4 rounded-lg text-center py-2 border-color3 duration-500 ${
+      className={`basis-[32%] border-4 rounded-lg text-center py-2 outline-none border-color3 duration-500 ${
         checked ? "bg-color3" : "bg-white"
       }`}
       onClick={() => handleSubjectChange(subject)}

@@ -38,14 +38,6 @@ function Lobby() {
     };
   }, []);
 
-  function handleSubjectChange(subject) {
-    if (subjects.includes(subject)) {
-      setSubjects(subjects.filter((s) => s !== subject));
-    } else {
-      setSubjects([...subjects, subject]);
-    }
-  }
-
   function handlePlayButton() {
     console.log("vou jogar!");
     const payload = {

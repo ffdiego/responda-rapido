@@ -8,7 +8,7 @@ import { NormalButton, WhiteButton } from "./buttons";
 export default function TopBar() {
   const [name, setName] = useState("");
   const [time, setTime] = useState(30);
-  const [stopClock, setStopClock] = useState(false);
+  const [stopClock, setStopClock] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
