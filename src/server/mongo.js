@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
+const { Schema } = mongoose;
 require("dotenv").config();
-
-main().catch((err) => console.log(err));
 
 const perguntaSchema = new mongoose.Schema({
   N: Number,
@@ -15,12 +14,15 @@ const perguntaSchema = new mongoose.Schema({
   Certa: Number,
 });
 
-const pergunta = mongoose.model("Perguntas", perguntaSchema);
+//o terceiro argumento de mongoose.model() é o nome da coleção.
+const pergunta = mongoose.model("Pergunta", perguntaSchema, "Perguntas");
 
-console.log("ENV", process.env.MONGO_URI);
+main().catch((err) => console.log(err));
 
 async function main() {
+  console.log("connectando ao banco de dados");
   await mongoose.connect(process.env.MONGO_URI);
-  const saida = await pergunta.find({ N: 30 });
-  console.log(saida);
+  console.log("Verificando perguntas...");
+  const perguntas = await pergunta.aggregate([{ $sample: { size: 10 } }]);
+  console.log(perguntas);
 }
