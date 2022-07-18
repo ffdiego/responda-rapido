@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { WhiteButton } from "./components/buttons";
 import { Container } from "./components/container";
 import TopBar from "./components/TopBar";
@@ -11,6 +12,7 @@ function RoomList() {
 }
 
 function Main() {
+  const navigate = useNavigate();
   const salas = [
     { nome: "sala legal", jogadores: 1 },
     { nome: "sala paia ;/", jogadores: 5 },
@@ -19,7 +21,7 @@ function Main() {
   return (
     <div className="bg-color3 mt-2 rounded-xl p-2">
       <h1 className="text-xl text-white">Salas:</h1>
-      <WhiteButton>Novo Jogo</WhiteButton>
+      <WhiteButton onClick={() => navigate("/newgame")}>Novo Jogo</WhiteButton>
       {salas.map((item, index) => (
         <Sala key={index} nome={item.nome} jogadores={item.jogadores} />
       ))}
