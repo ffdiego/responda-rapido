@@ -17,12 +17,16 @@ const perguntaSchema = new mongoose.Schema({
 //o terceiro argumento de mongoose.model() é o nome da coleção.
 const pergunta = mongoose.model("Pergunta", perguntaSchema, "Perguntas");
 
-main().catch((err) => console.log(err));
+connect().catch((err) => console.log(err));
 
-async function main() {
+async function connect() {
   console.log("connectando ao banco de dados");
   await mongoose.connect(process.env.MONGO_URI);
-  console.log("Verificando perguntas...");
-  const perguntas = await pergunta.aggregate([{ $sample: { size: 10 } }]);
-  console.log(perguntas);
 }
+
+async function getQuestions() {
+  const perguntas = await pergunta.aggregate([{ $sample: { size: 10 } }]);
+  return perguntas;
+}
+
+module.exports = { getQuestions };

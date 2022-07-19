@@ -4,6 +4,7 @@ const server = require("http").createServer(app);
 const path = require("path");
 const socketio = require("socket.io");
 const { v4 } = require("uuid");
+const { Questions } = require("./src/server/getQuestions");
 
 const port = process.env.PORT || 3000;
 const production = process.env.NODE_ENV === "production";
