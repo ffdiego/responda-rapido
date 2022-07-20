@@ -1,18 +1,18 @@
-const express = require("express");
-const app = express();
-const server = require("http").createServer(app);
-const path = require("path");
-const socketio = require("socket.io");
-const { v4 } = require("uuid");
-const { Questions } = require("./src/server/getQuestions");
+import express from "express";
+import path from "path";
+import http from "http";
+import socketio from "socket.io";
+import { v4 } from "uuid";
 
+const app = express();
+const server = http.createServer(app);
 const port = process.env.PORT || 3000;
 const production = process.env.NODE_ENV === "production";
 
-let io;
+let io: socketio.Server;
 
 if (production) {
-  io = socketio(server);
+  io = new socketio.Server(server);
 
   // serve the static files on "dist" folder
   app.use(express.static("dist"));

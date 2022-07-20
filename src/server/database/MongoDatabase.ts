@@ -22,12 +22,12 @@ export class MongoDatabase implements IDatabase {
     if (!MONGO_URI) {
       throw new Error("MONGO_URI not defined");
     }
-    console.log("connecting to mongo");
+
     mongoose.connect(MONGO_URI);
   }
 
   async getQuestions(N: number, subject: ISubjects): Promise<IQuestion[]> {
-    console.log("making a query");
+
     const perguntas = await perguntaModel.aggregate([
       { $match: { Materia: subject } },
       { $sample: { size: N } },
