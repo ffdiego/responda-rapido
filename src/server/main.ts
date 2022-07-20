@@ -3,6 +3,7 @@ import path from "path";
 import http from "http";
 import socketio from "socket.io";
 import { v4 } from "uuid";
+import { ISubjects } from "./questions/IQuestions";
 
 const app = express();
 const server = http.createServer(app);
@@ -40,6 +41,8 @@ io.on("connection", (socket) => {
       socket.emit("uuid-change", uuid);
     }
   });
+
+  socket.on("newgame", (payload: ISubjects[]) => {});
 
   socket.on("ping", () => {
     console.log("received ping");

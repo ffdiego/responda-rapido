@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { IQuestion, ISubjects } from "../questions/IQuestions";
+import { IDificuldade, IQuestion, ISubjects } from "../questions/IQuestions";
 import { IDatabase } from "./IDatabase";
 import "dotenv/config";
 
@@ -26,8 +26,11 @@ export class MongoDatabase implements IDatabase {
     mongoose.connect(MONGO_URI);
   }
 
-  async getQuestions(N: number, subject: ISubjects): Promise<IQuestion[]> {
-
+  async getQuestions(
+    N: number,
+    subject: ISubjects,
+    dificuldade: IDificuldade
+  ): Promise<IQuestion[]> {
     const perguntas = await perguntaModel.aggregate([
       { $match: { Materia: subject } },
       { $sample: { size: N } },
