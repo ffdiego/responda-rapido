@@ -1,10 +1,20 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { NormalButton } from "./components/buttons";
 import { Container } from "./components/container";
 import { Subjects } from "./components/newgame";
+import SocketContext from "./context/socketContext";
 
 export default function NewGame() {
   const [subjects, setSubjects] = useState([]);
+  const socket = useContext(SocketContext);
+  const navigate = useNavigate();
+  useEffect(() => {
+    socket.on("redirect-playpage", () => {
+      navigate("/play");
+    });
+  }, [socket]);
 
   function handleSubjectChange(subject) {
     if (subjects.includes(subject)) {
@@ -16,6 +26,7 @@ export default function NewGame() {
 
   function handlePlayButton() {
     console.log("vou jogar!", subjects);
+    socket.emit("newgame", subjects);
   }
 
   return (

@@ -34,6 +34,4 @@ if (production) {
 io.on("connection", (socket) => {
   console.log("[CON]", socket.id);
   const session = new Session(socket);
-
-  socket.on("newgame", (payload: ISubject[]) => {});
 });
