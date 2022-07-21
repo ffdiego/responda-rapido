@@ -1,7 +1,7 @@
 export interface IQuestion {
   N: number;
   Pergunta: string;
-  Materia: ISubjects;
+  Materia: ISubject;
   Dificuldade: IDificuldade;
   R1: string;
   R2: string;
@@ -12,7 +12,7 @@ export interface IQuestion {
 
 export type IDificuldade = 0 | 1 | 2 | 3;
 
-export type ISubjects =
+export type ISubject =
   | "INGLES"
   | "PORTUGUES"
   | "CIENCIAS"

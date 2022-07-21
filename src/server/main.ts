@@ -3,7 +3,8 @@ import path from "path";
 import http from "http";
 import socketio from "socket.io";
 import { v4 } from "uuid";
-import { ISubjects } from "./questions/IQuestions";
+import { ISubject } from "./questions/IQuestions";
+import { Session } from "./session/Session";
 
 const app = express();
 const server = http.createServer(app);
@@ -32,20 +33,7 @@ if (production) {
 
 io.on("connection", (socket) => {
   console.log("[CON]", socket.id);
-  socket.emit("hello from the ws server!");
+  const session = new Session(socket);
 
-  socket.on("play", (payload) => {
-    console.log("play", payload);
-    if (!payload.uuid) {
-      const uuid = v4();
-      socket.emit("uuid-change", uuid);
-    }
-  });
-
-  socket.on("newgame", (payload: ISubjects[]) => {});
-
-  socket.on("ping", () => {
-    console.log("received ping");
-    socket.emit("pong");
-  });
+  socket.on("newgame", (payload: ISubject[]) => {});
 });

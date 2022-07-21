@@ -6,7 +6,7 @@ describe("Mongo Database", () => {
   const mongoDatabase = new MongoDatabase();
 
   it("should return 10 english questions", async () => {
-    const questions = await mongoDatabase.getQuestions(10, "INGLES");
+    const questions = await mongoDatabase.getQuestions(10, ["INGLES"], 1);
     expect(questions.length).toBe(10);
     for (const question of questions) {
       expect(question.Materia).toBe("INGLES");
@@ -14,7 +14,7 @@ describe("Mongo Database", () => {
   });
 
   it("should return 10 math questions", async () => {
-    const questions = await mongoDatabase.getQuestions(10, "MATEMATICA");
+    const questions = await mongoDatabase.getQuestions(10, ["MATEMATICA"], 0);
     expect(questions.length).toBe(10);
     for (const question of questions) {
       expect(question.Materia).toBe("MATEMATICA");

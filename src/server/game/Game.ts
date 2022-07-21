@@ -1,24 +1,31 @@
 import { MongoDatabase } from "../database/MongoDatabase";
-import { IQuestion, ISubjects } from "../questions/IQuestions";
+import { IQuestion, ISubject } from "../questions/IQuestions";
 
-class Game {
-  subjects: ISubjects[];
+export class Game {
+  subjects: ISubject[];
   questions: IQuestion[];
 
-  constructor(subjects: ISubjects[]) {
+  constructor(subjects: ISubject[]) {
+    if (!subjects) {
+      throw new Error("subjects not defined");
+    }
     this.subjects = subjects;
     this.questions = [];
   }
 
   async prepareQuestions() {
     const database = new MongoDatabase();
-    //easy questions
-    let easy_subjects = [];
-    do {
-      for (let subject of this.subjects) {
-      }
-    } while (easy_subjects.length < 5);
 
-    const easy = await database.getQuestions();
+    const easy = await database.getQuestions(5, this.subjects, 0);
+    const medi = await database.getQuestions(5, this.subjects, 1);
+    const hard = await database.getQuestions(5, this.subjects, 2);
+    const mill = await database.getQuestions(1, this.subjects, 3);
+
+    database.disconnect();
+    this.questions = [...easy, ...medi, ...hard, ...mill];
+  }
+
+  saveGameToDB() {
+    // TODO
   }
 }

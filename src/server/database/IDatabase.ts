@@ -1,10 +1,10 @@
-import { IDificuldade, IQuestion, ISubjects } from "../questions/IQuestions";
+import { IDificuldade, IQuestion, ISubject } from "../questions/IQuestions";
 
 export interface IDatabase {
   //get n questions from a specific subject
   getQuestions(
     N: number,
-    subject: ISubjects,
+    subjects: ISubject[],
     dificuldade: IDificuldade
   ): Promise<IQuestion[]>;
 }
