@@ -3,12 +3,13 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SocketContext from "./context/socketContext";
 import "./index.css";
+
+//Pages
 import Login from "./Login";
 import NewGame from "./NewGame";
 import Play from "./Play";
 import Dashboard from "./Dashboard";
 import CreateSocket from "./helpers/createSocket";
-import { Container } from "./components/container";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
