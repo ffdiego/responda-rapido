@@ -1,17 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { WhiteButton } from "./components/buttons";
 import { Container } from "./components/container";
-import TopBar from "./components/TopBar";
 
-function RoomList() {
-  return (
-    <Container>
-      <Main />
-    </Container>
-  );
-}
-
-function Main() {
+export default function Dashboard() {
   const navigate = useNavigate();
   const salas = [
     { nome: "sala legal", jogadores: 1 },
@@ -42,5 +33,3 @@ function Sala({ nome, jogadores }) {
     </div>
   );
 }
-
-export default RoomList;

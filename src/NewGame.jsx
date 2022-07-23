@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NormalButton } from "./components/buttons";
-import { Container } from "./components/container";
+import { Container as div } from "./components/container";
 import { Subjects } from "./components/newgame";
 import SocketContext from "./context/socketContext";
 
@@ -30,7 +30,7 @@ export default function NewGame() {
   }
 
   return (
-    <Container>
+    <div>
       <Header />
       <div>
         <Subjects
@@ -39,7 +39,7 @@ export default function NewGame() {
         />
         <Footer btnEnabled={subjects.length >= 3} btnClick={handlePlayButton} />
       </div>
-    </Container>
+    </div>
   );
 }
 

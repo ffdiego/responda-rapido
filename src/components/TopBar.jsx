@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { BiArrowBack } from "react-icons/bi";
 import { BsStopwatch } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { NormalButton, WhiteButton } from "./buttons";
 
 export default function TopBar() {
@@ -11,6 +11,7 @@ export default function TopBar() {
   const [stopClock, setStopClock] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     if (time <= 0) return;
@@ -26,13 +27,18 @@ export default function TopBar() {
     if (localName) setName(localAvatar + localName);
   }, []);
 
+  function handleBackButton() {
+    if (location.pathname === "/rooms") setModalOpen(true);
+    else navigate(-1);
+  }
+
   return (
     <>
       <header className="box-border bg-color3 mt-2 py-2 px-1 rounded-xl text-white drop-shadow-lg">
         <div className="flex justify-between items-center font-bold px-2">
           <div
             className="p-2 px-4 bg-white bg-opacity-10 rounded-md hover:bg-opacity-30 duration-300 cursor-pointer"
-            onClick={() => setModalOpen(true)}
+            onClick={handleBackButton}
           >
             <BiArrowBack className="text-xl text-white " />
           </div>

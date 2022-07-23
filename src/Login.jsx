@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import SocketContext from "./context/socketContext";
 
-function Lobby() {
+export default function Login() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -50,7 +50,7 @@ function Lobby() {
     localStorage.setItem("rr-name", name);
     localStorage.setItem("rr-avatar", avatar);
 
-    navigate("/rooms");
+    navigate("/dash");
   }
 
   return (
@@ -88,5 +88,3 @@ function Lobby() {
     </div>
   );
 }
-
-export default Lobby;
