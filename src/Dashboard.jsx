@@ -2,7 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { WhiteButton } from "./components/buttons";
 import { Container } from "./components/container";
 
-export default function Dashboard() {
+export default function Layout() {
+  return (
+    <Container>
+      <Dashboard />
+    </Container>
+  );
+}
+
+function Dashboard() {
   const navigate = useNavigate();
   const salas = [
     { nome: "sala legal", jogadores: 1 },

@@ -4,7 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import SocketContext from "./context/socketContext";
 
-export default function Login() {
+export default function Layout() {
+  return <Login />;
+}
+
+function Login() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");

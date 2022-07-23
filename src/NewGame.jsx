@@ -2,11 +2,19 @@ import { useEffect } from "react";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NormalButton } from "./components/buttons";
-import { Container as div } from "./components/container";
+import { Container, Container as div } from "./components/container";
 import { Subjects } from "./components/newgame";
 import SocketContext from "./context/socketContext";
 
-export default function NewGame() {
+export default function Layout() {
+  return (
+    <Container>
+      <NewGame />
+    </Container>
+  );
+}
+
+function NewGame() {
   const [subjects, setSubjects] = useState([]);
   const socket = useContext(SocketContext);
   const navigate = useNavigate();

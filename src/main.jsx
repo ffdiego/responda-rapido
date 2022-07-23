@@ -14,14 +14,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <SocketContext.Provider value={CreateSocket()}>
       <BrowserRouter>
-        <Container>
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/dash" element={<Dashboard />} />
-            <Route path="/newgame" element={<NewGame />} />
-            <Route path="/play" element={<Play />} />
-          </Routes>
-        </Container>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/dash" element={<Dashboard />} />
+          <Route path="/newgame" element={<NewGame />} />
+          <Route path="/play" element={<Play />} />
+        </Routes>
       </BrowserRouter>
     </SocketContext.Provider>
   </React.StrictMode>

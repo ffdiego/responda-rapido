@@ -7,19 +7,10 @@ import { NormalButton, WhiteButton } from "./buttons";
 
 export default function TopBar() {
   const [name, setName] = useState("");
-  const [time, setTime] = useState(30);
-  const [stopClock, setStopClock] = useState(true);
+
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    if (time <= 0) return;
-    const timer = setTimeout(() => {
-      if (!stopClock) setTime(time - 1);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, [time]);
 
   useEffect(() => {
     const localName = localStorage.getItem("rr-name");
@@ -34,7 +25,7 @@ export default function TopBar() {
 
   return (
     <>
-      <header className="box-border bg-color3 mt-2 py-2 px-1 rounded-xl text-white drop-shadow-lg">
+      <header className="box-border bg-color3 my-2 py-2 px-1 rounded-xl text-white drop-shadow-lg">
         <div className="flex justify-between items-center font-bold px-2">
           <div
             className="p-2 px-4 bg-white bg-opacity-10 rounded-md hover:bg-opacity-30 duration-300 cursor-pointer"
@@ -43,12 +34,7 @@ export default function TopBar() {
             <BiArrowBack className="text-xl text-white " />
           </div>
           <h3 className="text-2xl">{name}</h3>
-          <div className="text-2xl flex items-center gap-2">
-            <p key={time} className="animalHappy">
-              {time}
-            </p>
-            <BsStopwatch />
-          </div>
+          <Clock />
         </div>
       </header>
       {modalOpen && (
@@ -75,6 +61,29 @@ export default function TopBar() {
         </Modal>
       )}
     </>
+  );
+}
+
+function Clock() {
+  const [time, setTime] = useState(30);
+  const [showClock, setShowClock] = useState(true);
+  const [clockRunning, setClockRunning] = useState(false);
+
+  useEffect(() => {
+    if (time <= 0) return;
+    const timer = setTimeout(() => {
+      if (clockRunning) setTime(time - 1);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [time]);
+
+  return (
+    <div className="text-2xl flex items-center gap-2">
+      <p key={time} className="animalHappy">
+        {(showClock && time) || ""}
+      </p>
+      <BsStopwatch />
+    </div>
   );
 }
 
