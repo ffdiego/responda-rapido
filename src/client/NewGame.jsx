@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { NormalButton } from "./components/buttons";
 import { Container, Container as div } from "./components/container";
 import { Subjects } from "./components/newgame";
-import SocketContext from "./context/socketContext";
+import { useSocket } from "./helpers/useSocket";
 
 export default function Layout() {
   return (
@@ -16,12 +16,14 @@ export default function Layout() {
 
 function NewGame() {
   const [subjects, setSubjects] = useState([]);
-  const socket = useContext(SocketContext);
+  const socket = useSocket();
   const navigate = useNavigate();
   useEffect(() => {
     socket.on("redirect-playpage", () => {
       navigate("/play");
     });
+
+    return () => socket.off();
   }, [socket]);
 
   function handleSubjectChange(subject) {

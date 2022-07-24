@@ -15,12 +15,17 @@ export default function TopBar() {
   useEffect(() => {
     const localName = localStorage.getItem("rr-name");
     const localAvatar = localStorage.getItem("rr-avatar");
-    if (localName) setName(localAvatar + localName);
+    if (localName) setName(localAvatar + " " + localName);
   }, []);
 
   function handleBackButton() {
-    if (location.pathname === "/rooms") setModalOpen(true);
+    if (location.pathname === "/dash") setModalOpen(true);
     else navigate(-1);
+  }
+
+  function handleLogout() {
+    localStorage.removeItem("rr-avatar");
+    navigate("/");
   }
 
   return (
@@ -52,7 +57,7 @@ export default function TopBar() {
               <p className="mb-4 text-xl font-bold text-color3">
                 Deseja sair do jogo?
               </p>
-              <NormalButton onClick={() => navigate("/")}>Sair</NormalButton>
+              <NormalButton onClick={handleLogout}>Sair</NormalButton>
               <WhiteButton onClick={() => setModalOpen(false)}>
                 Cancelar
               </WhiteButton>

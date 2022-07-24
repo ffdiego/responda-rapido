@@ -1,6 +1,7 @@
+import { useEffect } from "react";
 import { io } from "socket.io-client";
 
-export default function CreateSocket() {
+export function useSocket() {
   const production = process.env.NODE_ENV === "production";
 
   let address = "";
