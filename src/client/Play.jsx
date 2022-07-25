@@ -38,7 +38,7 @@ function Play() {
   }, [socket]);
 
   return (
-    <div className="bg-color3  p-2 rounded-xl min-h-[50%]">
+    <div className="rounded-xl min-h-[50%] border-4 border-color3">
       {screen == 0 && <Loading text={loadText} />}
       {screen == 1 && <PressStart />}
       {screen == 2 && <PerguntaRespostas />}
@@ -57,9 +57,11 @@ function Loading({ text }) {
 
 function PressStart() {
   return (
-    <div className="text-white flex flex-col items-center justify-center h-full">
-      <div className="flex flex-col gap-2 text-lg mb-5">
-        <b className="text-center">⚡️ Responda Rápido! ⚡️</b>
+    <div className="text-white rounded-t-xl">
+      <h1 className="text-center text-xl font-semibold bg-color3">
+        ⚡️ Responda Rápido! ⚡️
+      </h1>
+      <div className="flex flex-col gap-2 text-lg bg-color3 bg-opacity-40 p-2 mb-4">
         <p>
           Prepare-se! Você terá 30 segundos para responder uma bateria de
           questões.
@@ -67,19 +69,21 @@ function PressStart() {
         <p className="font-semibold">
           Acertos
           <ul className="font-normal list-disc ml-4">
-            <li>⏱️ +5s</li>
-            <li>💲 % do prêmio</li>
+            <li>⏱️ + 5s</li>
+            <li>💲 + % do prêmio</li>
           </ul>
         </p>
         <div>
           <p className="font-bold">Erros:</p>
           <ul className="list-disc ml-4">
-            <li>⏱️ -5s</li>
+            <li>⏱️ - 5s</li>
           </ul>
         </div>
         <p>O jogo acaba quando seu tempo zerar.</p>
       </div>
-      <WhiteButton>Começar</WhiteButton>
+      <div className="text-right bg-color3 bg-opacity-40">
+        <WhiteButton>Começar</WhiteButton>
+      </div>
     </div>
   );
 }
