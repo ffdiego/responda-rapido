@@ -1,20 +1,8 @@
 import mongoose from "mongoose";
 import { IDificuldade, IQuestion, ISubject } from "../questions/IQuestions";
 import { IDatabase } from "./IDatabase";
+import { perguntaModel } from "./MongoModels";
 import "dotenv/config";
-
-const perguntaSchema = new mongoose.Schema<IQuestion>({
-  N: Number,
-  Pergunta: String,
-  Materia: String,
-  Dificuldade: Number,
-  R1: String,
-  R2: String,
-  R3: String,
-  R4: String,
-  Certa: Number,
-});
-const perguntaModel = mongoose.model("Pergunta", perguntaSchema, "Perguntas");
 
 export class MongoDatabase implements IDatabase {
   constructor() {

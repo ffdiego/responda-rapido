@@ -1,7 +1,7 @@
 import { AnimalChoice } from "./components/lobby";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSocket } from "./helpers/useSocket";
+import SocketContext from "./socket/context";
 
 export default function Layout() {
   return <Login />;
@@ -11,34 +11,13 @@ function Login() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
-  const socket = useSocket();
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
     const localName = localStorage.getItem("rr-name");
     const localAvatar = localStorage.getItem("rr-avatar");
     if (localName) setName(localName);
     if (localAvatar) navigate("/dash");
-  }, []);
-
-  useEffect(() => {
-    if (!socket) return;
-
-    socket.on("connect", () => {
-      console.log("connected!");
-    });
-
-    socket.on("disconnect", () => {
-      console.log("disconnected");
-    });
-
-    socket.on("uuid-change", (uuid) => {
-      console.log("uuid-change", uuid);
-      localStorage.setItem("uuid", uuid);
-    });
-
-    return () => {
-      socket.off();
-    };
   }, []);
 
   function handlePlayButton() {

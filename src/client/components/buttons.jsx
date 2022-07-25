@@ -13,7 +13,7 @@ export function NormalButton({ children, onClick, className, disabled }) {
 export function WhiteButton({ children, onClick }) {
   return (
     <button
-      className="text-lg font-semibold bg-white border-2 border-color3 p-2 px-4 rounded-xl"
+      className="text-lg font-semibold bg-white border-2 border-color3 p-2 px-4 rounded-xl text-black"
       onClick={onClick}
     >
       {children}

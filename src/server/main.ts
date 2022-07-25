@@ -5,11 +5,13 @@ import socketio from "socket.io";
 import { v4 } from "uuid";
 import { ISubject } from "./questions/IQuestions";
 import { Session } from "./session/Session";
+import { MongoDatabase } from "./database/MongoDatabase";
 
 const app = express();
 const server = http.createServer(app);
 const port = process.env.PORT || 3000;
 const production = process.env.NODE_ENV === "production";
+const database = new MongoDatabase();
 
 let io: socketio.Server;
 
@@ -33,5 +35,5 @@ if (production) {
 
 io.on("connection", (socket) => {
   console.log("[CON]", socket.id);
-  const session = new Session(socket);
+  const session = new Session(socket, database);
 });
