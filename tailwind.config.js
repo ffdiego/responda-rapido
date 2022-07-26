@@ -11,6 +11,19 @@ module.exports = {
         color5: "#d6d5bd",
         color6: "#5f4130",
       },
+      animation: {
+        "fill-progress": "fill 10s linear",
+      },
+      keyframes: {
+        fill: {
+          "0%": {
+            width: "0%",
+          },
+          "100%": {
+            width: "100%",
+          },
+        },
+      },
     },
   },
   plugins: [],
