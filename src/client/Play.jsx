@@ -4,7 +4,8 @@ import { Container } from "./components/container";
 import { useContext } from "react";
 import SocketContext from "./socket/context";
 import { useNavigate } from "react-router-dom";
-import { NormalButton, WhiteButton } from "./components/buttons";
+import { WhiteButton } from "./components/buttons";
+import { Footer, TitleBar } from "./components/edges";
 
 export default function Layout() {
   return (
@@ -38,11 +39,11 @@ function Play() {
   }, [socket]);
 
   return (
-    <div className="rounded-xl min-h-[50%] border-4 border-color3">
+    <>
       {screen == 0 && <Loading text={loadText} />}
       {screen == 1 && <PressStart />}
       {screen == 2 && <PerguntaRespostas />}
-    </div>
+    </>
   );
 }
 
@@ -57,33 +58,35 @@ function Loading({ text }) {
 
 function PressStart() {
   return (
-    <div className="text-white rounded-t-xl">
-      <h1 className="text-center text-xl font-semibold bg-color3">
-        ⚡️ Responda Rápido! ⚡️
-      </h1>
-      <div className="flex flex-col gap-2 text-lg bg-color3 bg-opacity-40 p-2 mb-4">
-        <p>
-          Prepare-se! Você terá 30 segundos para responder uma bateria de
-          questões.
-        </p>
-        <p className="font-semibold">
-          Acertos
-          <ul className="font-normal list-disc ml-4">
-            <li>⏱️ + 5s</li>
-            <li>💲 + % do prêmio</li>
-          </ul>
-        </p>
-        <div>
-          <p className="font-bold">Erros:</p>
-          <ul className="list-disc ml-4">
-            <li>⏱️ - 5s</li>
-          </ul>
+    <>
+      <TitleBar text="Responda Rápido!" />
+      <div className="text-white border-4 border-color3">
+        <div className="flex flex-col gap-2 text-lg bg-color3 bg-opacity-60 p-2">
+          <p>
+            Prepare-se! Você terá 30 segundos para responder uma bateria de
+            questões.
+          </p>
+          <p className="font-semibold">
+            Acertos
+            <ul className="font-normal list-disc ml-6">
+              <li>⏱️ + 5s</li>
+              <li>💲 + % do prêmio</li>
+            </ul>
+          </p>
+          <div>
+            <p className="font-bold">Erros:</p>
+            <ul className="list-disc ml-6">
+              <li>⏱️ - 5s</li>
+            </ul>
+          </div>
+          <p>O jogo acaba quando seu tempo zerar.</p>
         </div>
-        <p>O jogo acaba quando seu tempo zerar.</p>
       </div>
-      <div className="text-right bg-color3 bg-opacity-40">
-        <WhiteButton>Começar</WhiteButton>
-      </div>
-    </div>
+      <Footer
+        btnText="Começar"
+        btnClick={() => setScreen(1)}
+        btnEnabled={true}
+      />
+    </>
   );
 }

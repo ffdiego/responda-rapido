@@ -30,7 +30,7 @@ export default function TopBar() {
 
   return (
     <>
-      <header className="box-border bg-color3 my-2 py-2 px-1 rounded-xl text-white drop-shadow-lg">
+      <header className="box-border bg-color3 my-2 mb-4 py-2 px-1 rounded-xl text-white drop-shadow-lg">
         <div className="flex justify-between items-center font-bold px-2">
           <div
             className="p-2 px-4 bg-white bg-opacity-10 rounded-md hover:bg-opacity-30 duration-300 cursor-pointer"
