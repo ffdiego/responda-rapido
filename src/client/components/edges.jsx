@@ -10,7 +10,7 @@ export function TitleBar({ text }) {
 
 export function Footer({ btnText, btnClick, btnEnabled }) {
   return (
-    <div className="box-border border-4 border-color3 bg-color3 bg-opacity-40  py-2 drop-shadow-lg border-t-0 rounded-b-xl flex justify-end px-2">
+    <div className="border-4 border-color3 bg-green-700 py-2 drop-shadow-lg border-t-4 rounded-b-xl flex justify-end px-2">
       <NormalButton
         onClick={btnClick}
         className={btnEnabled ? "" : "opacity-50 cursor-not-allowed"}
