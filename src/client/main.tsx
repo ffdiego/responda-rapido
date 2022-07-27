@@ -10,7 +10,7 @@ import NewGame from "./NewGame";
 import Play from "./Play";
 import Dashboard from "./Dashboard";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <SocketProvider>
       <BrowserRouter>

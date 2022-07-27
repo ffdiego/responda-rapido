@@ -5,8 +5,6 @@ import { Container } from "./components/container";
 import { useContext } from "react";
 import SocketContext from "./socket/context";
 import { useNavigate } from "react-router-dom";
-import { WhiteButton } from "./components/buttons";
-import { Footer, TitleBar } from "./components/edges";
 
 export default function Layout() {
   return (

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+
+import { io, Socket } from "socket.io-client";
 import SocketContext from "./context";
 
-export default function Provider({ children }) {
-  const [socket, setSocket] = useState(null);
+export default function Provider({ children }: { children: JSX.Element }) {
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
     const production = process.env.NODE_ENV === "production";

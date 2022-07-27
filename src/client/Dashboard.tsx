@@ -28,7 +28,7 @@ function Dashboard() {
   );
 }
 
-function Sala({ nome, jogadores }) {
+function Sala({ nome, jogadores }: { nome: string; jogadores: number }) {
   return (
     <div className="bg-white bg-opacity-10 mt-2 rounded-xl p-2 text-white flex flex-col">
       <div className="flex justify-between items-center">
