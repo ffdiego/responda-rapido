@@ -12,7 +12,9 @@ module.exports = {
         color6: "#5f4130",
       },
       animation: {
-        "fill-progress": "fill 10s linear",
+        "fade-in-top": "fadeInFromTop 500ms ease-in-out",
+        "fade-out-left": "fadeOutToLeft 500ms linear",
+        "fill-progress": "fill 5s linear",
       },
       keyframes: {
         fill: {
@@ -21,6 +23,26 @@ module.exports = {
           },
           "100%": {
             width: "100%",
+          },
+        },
+        fadeInFromTop: {
+          "0%": {
+            opacity: 0,
+            transform: "translateY(-100%)",
+          },
+          "100%": {
+            opacity: 1,
+            transform: "translateY(0)",
+          },
+        },
+        fadeOutToLeft: {
+          "0%": {
+            opacity: 1,
+            transform: "translateX(0)",
+          },
+          "100%": {
+            opacity: 0,
+            transform: "translateX(-100%)",
           },
         },
       },
