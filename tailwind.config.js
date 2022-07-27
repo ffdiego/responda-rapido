@@ -14,6 +14,7 @@ module.exports = {
       animation: {
         "fade-in-top": "fadeInFromTop 500ms ease-in-out",
         "fade-in-left": "fadeInFromLeft 500ms ease-in-out",
+        "fade-in": "fadeIn 500ms ease-in-out",
         "fill-progress": "fill 5s linear",
       },
       keyframes: {

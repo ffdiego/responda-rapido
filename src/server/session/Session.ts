@@ -25,17 +25,29 @@ export class Session {
     });
 
     socket.on("play", async () => {
-      console.log(socket.id, "play");
+      console.log(socket.id, "play-enterpage");
       if (!this.game) {
         socket.emit("redirect-dash");
       } else {
         socket.emit("play-showloading", "Carregando perguntas...");
+        console.log("Preparing questions!");
         await this.game.prepareQuestions();
+        console.log("inviting players!");
         socket.emit("play-showpressstart");
         //this.game.start();
       }
     });
+    socket.on("play-startgame", () => {
+      console.log(socket.id, "-- Started the game --");
+      if (!this.game) {
+        socket.emit("redirect-dash");
+      } else {
+        this.start();
+      }
+    });
   }
+
+  start() {}
 
   emitNewUUID() {
     const uuid = v4();

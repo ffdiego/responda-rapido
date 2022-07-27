@@ -1,4 +1,5 @@
-import { Loading, PerguntaRespostas, PressStart } from "./components/play";
+import { Loading, PerguntaRespostas } from "./components/play";
+import { PressStart } from "./components/play/pressStart";
 import { Results } from "./components/play/results";
 import { useEffect, useState } from "react";
 import { Container } from "./components/container";
@@ -24,6 +25,7 @@ function Play() {
   const socket = useContext(SocketContext);
 
   useEffect(() => {
+    socket?.emit("play-enterpage");
     socket?.on("redirect-dash", () => {
       navigate("/dash");
     });

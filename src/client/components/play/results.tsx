@@ -16,7 +16,7 @@ export function Results() {
   };
 
   return (
-    <main>
+    <main className="animate-fade-in">
       <TitleBar text="Resultados" />
       <div className="bg-color3 bg-opacity-60 border-x-4 border-b-4 rounded-b-xl border-color3 flex flex-col justify-center text-white overflow-hidden">
         <div className="p-2 text-lg">
