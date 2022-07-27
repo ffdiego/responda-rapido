@@ -15,8 +15,10 @@ export default function Layout() {
 }
 
 function Play() {
-  const [screen, setScreen] = useState(3);
-  const [loadText, setLoadText] = useState("");
+  const [screen, setScreen] = useState(0);
+  const [loadText, setLoadText] = useState(
+    "Gerando questões, por favor aguarde..."
+  );
   const navigate = useNavigate();
 
   const socket = useContext(SocketContext);

@@ -1,6 +1,14 @@
 import { Footer, TitleBar } from "./edges";
 
-function Alternativa({ texto, id, onClick }) {
+function Alternativa({
+  texto,
+  id,
+  onClick,
+}: {
+  texto: string;
+  id: string;
+  onClick: () => void;
+}) {
   return (
     <button
       id={id}
@@ -17,7 +25,13 @@ function Alternativa({ texto, id, onClick }) {
   );
 }
 
-export function Alternativas({ alternativas, handleClick }) {
+export function Alternativas({
+  alternativas,
+  handleClick,
+}: {
+  alternativas: { 1: string; 2: string; 3: string; 4: string };
+  handleClick: Function;
+}) {
   if (!alternativas) {
     alternativas = {
       1: "REQUEIJÃO",
@@ -51,7 +65,7 @@ export function Pergunta({ pergunta }) {
 }
 
 export function PerguntaRespostas() {
-  function handleClick(e) {
+  function handleClick(e: React.ChangeEvent<HTMLInputElement>): void {
     console.log(e.target.id);
   }
 
@@ -100,11 +114,11 @@ export function PressStart() {
   );
 }
 
-export function Loading({ text }) {
+export function Loading({ text }: { text: string }) {
   return (
-    <div className="text-white font-semibold text-xl flex flex-col items-center justify-center h-full">
-      <p className="text-4xl animate-spin">🎹</p>
-      <p>{text}</p>
+    <div className="bg-color3 border-4 rounded-xl border-color3 text-white font-semibold text-xl flex flex-col items-center justify-center h-2/3 gap-6 animate-[fadeIn_300ms_ease-in-out_1]">
+      <p className="text-5xl animate-spin">⚙️</p>
+      <p className="text-center px-10">{text}</p>
     </div>
   );
 }
