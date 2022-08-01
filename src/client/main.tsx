@@ -11,16 +11,14 @@ import Play from "./Play";
 import Dashboard from "./Dashboard";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <SocketProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/dash" element={<Dashboard />} />
-          <Route path="/newgame" element={<NewGame />} />
-          <Route path="/play" element={<Play />} />
-        </Routes>
-      </BrowserRouter>
-    </SocketProvider>
-  </React.StrictMode>
+  <SocketProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dash" element={<Dashboard />} />
+        <Route path="/newgame" element={<NewGame />} />
+        <Route path="/play" element={<Play />} />
+      </Routes>
+    </BrowserRouter>
+  </SocketProvider>
 );

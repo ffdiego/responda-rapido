@@ -36,4 +36,7 @@ if (production) {
 io.on("connection", (socket) => {
   console.log("[CON]", socket.id);
   const session = new Session(socket, database);
+  socket.on("disconnect", (reason) => {
+    console.log(`[OFF] ${socket.id} due to ${reason}`);
+  });
 });

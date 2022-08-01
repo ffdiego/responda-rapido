@@ -25,6 +25,7 @@ function Play() {
   const socket = useContext(SocketContext);
 
   useEffect(() => {
+    console.count("entrei na pagina dejogar");
     socket?.emit("play-enterpage");
     socket?.on("redirect-dash", () => {
       navigate("/dash");

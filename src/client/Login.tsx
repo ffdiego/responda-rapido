@@ -27,7 +27,7 @@ function Login() {
       avatar,
       uuid: localStorage.getItem("uuid"),
     };
-    socket.emit("play", payload);
+    socket?.emit("play", payload);
 
     localStorage.setItem("rr-name", name);
     localStorage.setItem("rr-avatar", avatar);

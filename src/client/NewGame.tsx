@@ -22,9 +22,10 @@ function NewGame() {
 
   useEffect(() => {
     socket?.on("redirect-play", () => {
-      console.log("fui redirecionado!");
       navigate("/play");
     });
+
+    return () => socket?.off();
   }, [socket]);
 
   useEffect(() => {

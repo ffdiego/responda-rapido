@@ -24,7 +24,7 @@ export class Session {
       socket.emit("redirect-play");
     });
 
-    socket.on("play", async () => {
+    socket.on("play-enterpage", async () => {
       console.log(socket.id, "play-enterpage");
       if (!this.game) {
         socket.emit("redirect-dash");
@@ -37,7 +37,7 @@ export class Session {
         //this.game.start();
       }
     });
-    socket.on("play-startgame", () => {
+    socket.on("play", () => {
       console.log(socket.id, "-- Started the game --");
       if (!this.game) {
         socket.emit("redirect-dash");
