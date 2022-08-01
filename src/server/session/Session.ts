@@ -1,11 +1,12 @@
 import { Socket } from "socket.io";
 import { v4 } from "uuid";
 import { MongoDatabase } from "../database/MongoDatabase";
+import { InterServerEvents } from "../events/IEvents";
 import { Game } from "../game/Game";
 import { ISubject } from "../questions/IQuestions";
 
 export class Session {
-  socket: Socket;
+  socket: Socket<InterServerEvents>;
   database: MongoDatabase;
   game: Game | null;
 
@@ -18,29 +19,27 @@ export class Session {
 
   createListeners() {
     const socket = this.socket;
-    socket.on("newgame", (payload: ISubject[]) => {
-      console.log(socket.id, "newgame", payload);
+    socket.on("newGame", (payload) => {
       this.game = new Game(payload, this.database, this.socket);
-      socket.emit("redirect-play");
+      socket.emit("redirect", "/play");
     });
 
-    socket.on("play-enterpage", async () => {
+    socket.on("playRequestQuestions", async () => {
       console.log(socket.id, "play-enterpage");
       if (!this.game) {
-        socket.emit("redirect-dash");
+        socket.emit("redirect", "/dash");
       } else {
-        socket.emit("play-showloading", "Carregando perguntas...");
+        socket.emit("changeState", "loading");
         console.log("Preparing questions!");
         await this.game.prepareQuestions();
         console.log("inviting players!");
-        socket.emit("play-showpressstart");
-        //this.game.start();
+        socket.emit("changeState", "start");
       }
     });
-    socket.on("play", () => {
+    socket.on("playRequestStartGame", () => {
       console.log(socket.id, "-- Started the game --");
       if (!this.game) {
-        socket.emit("redirect-dash");
+        socket.emit("redirect", "/dash");
       } else {
         this.start();
       }
@@ -51,6 +50,6 @@ export class Session {
 
   emitNewUUID() {
     const uuid = v4();
-    this.socket.emit("uuid-change", uuid);
+    this.socket.emit("uuidChange", uuid);
   }
 }

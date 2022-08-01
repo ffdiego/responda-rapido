@@ -1,6 +1,10 @@
 import { Footer, TitleBar } from "../edges";
 
-export function PressStart() {
+export function PressStart({
+  handleStartGame,
+}: {
+  handleStartGame: () => void;
+}) {
   return (
     <main className="animate-fade-in">
       <TitleBar text="Responda Rápido!" />
@@ -26,11 +30,7 @@ export function PressStart() {
           <p>O jogo acaba quando seu tempo zerar.</p>
         </div>
       </div>
-      <Footer
-        btnText="Começar"
-        btnClick={() => alert("clicaste!")}
-        btnEnabled={true}
-      />
+      <Footer btnText="Começar" btnClick={handleStartGame} btnEnabled={true} />
     </main>
   );
 }

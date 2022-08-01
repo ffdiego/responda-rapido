@@ -6,6 +6,7 @@ import { Container } from "./components/container";
 import { useContext } from "react";
 import SocketContext from "./socket/context";
 import { useNavigate } from "react-router-dom";
+import { IResults } from "../server/events/IEvents";
 
 export default function Layout() {
   return (
@@ -17,35 +18,42 @@ export default function Layout() {
 
 function Play() {
   const [screen, setScreen] = useState(0);
-  const [loadText, setLoadText] = useState(
-    "Gerando questões, por favor aguarde..."
-  );
+  const [resultsData, setResultsData] = useState<IResults>({});
   const navigate = useNavigate();
 
   const socket = useContext(SocketContext);
 
   useEffect(() => {
-    console.count("entrei na pagina dejogar");
-    socket?.emit("play-enterpage");
-    socket?.on("redirect-dash", () => {
-      navigate("/dash");
+    socket?.emit("playRequestQuestions");
+    socket?.on("redirect", (page) => {
+      navigate(page);
     });
-    socket?.on("play-showloading", (text) => {
-      setLoadText(text);
-      setScreen(0);
+    socket?.on("changeState", (state, payload) => {
+      if (state === "loading") {
+        setScreen(0);
+      } else if (state === "start") {
+        setScreen(1);
+      } else if (state === "question") {
+        setScreen(2);
+      } else if (state === "results") {
+        setScreen(3);
+        if (payload) setResultsData(payload);
+      }
     });
-    socket?.on("play-showpressstart", () => {
-      setScreen(1);
-    });
+
     return () => {
       socket?.off();
     };
   }, [socket]);
 
+  function handleStartGame() {
+    socket?.emit("playRequestStartGame");
+  }
+
   return (
     <>
-      {screen == 0 && <Loading text={loadText} />}
-      {screen == 1 && <PressStart />}
+      {screen == 0 && <Loading />}
+      {screen == 1 && <PressStart handleStartGame={handleStartGame} />}
       {screen == 2 && <PerguntaRespostas />}
       {screen == 3 && <Results />}
     </>

@@ -2,8 +2,6 @@ import express from "express";
 import path from "path";
 import http from "http";
 import socketio from "socket.io";
-import { v4 } from "uuid";
-import { ISubject } from "./questions/IQuestions";
 import { Session } from "./session/Session";
 import { MongoDatabase } from "./database/MongoDatabase";
 
