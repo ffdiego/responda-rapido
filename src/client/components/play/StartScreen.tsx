@@ -1,6 +1,6 @@
 import { Footer, TitleBar } from "../edges";
 
-export function PressStart({
+export function StartScreen({
   handleStartGame,
 }: {
   handleStartGame: () => void;

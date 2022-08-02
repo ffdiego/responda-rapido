@@ -1,6 +1,8 @@
 import { IQuestion, ISubject } from "../questions/IQuestions";
 
-export interface IResults {}
+export interface IResults {
+  moneyTotal: number;
+}
 
 export interface InterServerEvents {
   uuidChange(uuid: string): void;

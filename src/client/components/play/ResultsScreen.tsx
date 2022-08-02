@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { BsStopwatch } from "react-icons/bs";
+import { IResults } from "../../../server/events/IEvents";
 import { TitleBar } from "../edges";
 
-export function Results() {
+export function ResultsScreen({ data }: { data: IResults }) {
   const obj = {
     correct: true,
     timeRemaining: 25,
