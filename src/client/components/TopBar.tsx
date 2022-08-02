@@ -19,13 +19,17 @@ export default function TopBar() {
   }, []);
 
   function handleBackButton() {
-    if (location.pathname === "/dash") setModalOpen(true);
-    else navigate(-1);
+    setModalOpen(true);
   }
 
-  function handleLogout() {
-    localStorage.removeItem("rr-avatar");
-    navigate("/");
+  function handleExitButton() {
+    if (location.pathname === "/dash") {
+      localStorage.removeItem("rr-avatar");
+      navigate("/");
+    }
+    if (location.pathname === "/play") {
+      navigate("/dash");
+    }
   }
 
   return (
@@ -55,9 +59,11 @@ export default function TopBar() {
               onClick={(e) => e.stopPropagation()}
             >
               <p className="mb-4 text-xl font-bold text-color3">
-                Deseja sair do jogo?
+                {location.pathname === "/play"
+                  ? "Deseja sair do jogo?"
+                  : "Deseja trocar seu nome?"}
               </p>
-              <NormalButton onClick={handleLogout}>Sair</NormalButton>
+              <NormalButton onClick={handleExitButton}>Sair</NormalButton>
               <WhiteButton onClick={() => setModalOpen(false)}>
                 Cancelar
               </WhiteButton>
@@ -92,6 +98,6 @@ function Clock() {
   );
 }
 
-function Modal({ children }) {
-  return createPortal(children, document.getElementById("modal"));
+function Modal({ children }: { children: React.ReactNode }) {
+  return createPortal(children, document.getElementById("modal")!);
 }
