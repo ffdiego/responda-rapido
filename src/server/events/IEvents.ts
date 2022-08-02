@@ -1,4 +1,4 @@
-import { ISubject } from "../questions/IQuestions";
+import { IQuestion, ISubject } from "../questions/IQuestions";
 
 export interface IResults {}
 
@@ -8,10 +8,9 @@ export interface InterServerEvents {
   newGame(payload: ISubject[]): void;
   playRequestQuestions: () => void;
   playRequestStartGame: () => void;
-  changeState(
-    state: "loading" | "start" | "question" | "results",
-    args?: IResults
-  ): void;
+  changeState(state: "loading" | "start"): void;
+  showQuestion(question: IQuestion): void;
+  showResults(results: IResults): void;
 
   redirect(page: "/dash" | "/play" | "/login"): void;
 }

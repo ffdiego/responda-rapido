@@ -1,8 +1,8 @@
-import { Session } from "inspector";
 import { Socket } from "socket.io";
 import { IDatabase } from "../database/IDatabase";
-import { MongoDatabase } from "../database/MongoDatabase";
 import { IQuestion, ISubject } from "../questions/IQuestions";
+
+import { writeFile } from "fs";
 
 export class Game {
   subjects: ISubject[];
@@ -29,6 +29,11 @@ export class Game {
     const mill = await database.getQuestions(1, this.subjects, 3);
 
     this.questions = [...easy, ...medi, ...hard, ...mill];
+    writeFile(
+      "questions.log",
+      JSON.stringify(this.questions, null, 4),
+      (err) => {}
+    );
   }
 
   saveGameToDB() {

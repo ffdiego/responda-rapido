@@ -1,4 +1,4 @@
-import { Footer, TitleBar } from "./edges";
+import { IQuestion } from "../../server/questions/IQuestions";
 
 function Alternativa({
   texto,
@@ -7,7 +7,7 @@ function Alternativa({
 }: {
   texto: string;
   id: string;
-  onClick: () => void;
+  onClick: (e) => void;
 }) {
   return (
     <button
@@ -26,37 +26,23 @@ function Alternativa({
 }
 
 export function Alternativas({
-  alternativas,
+  data,
   handleClick,
 }: {
-  alternativas: { 1: string; 2: string; 3: string; 4: string };
+  data: IQuestion;
   handleClick: Function;
 }) {
-  if (!alternativas) {
-    alternativas = {
-      1: "REQUEIJÃO",
-      2: "GELÉIA",
-      3: "MARGARINA",
-      4: "PATÊ",
-    };
-  }
   return (
     <div className="flex flex-col gap-5 flex-1 my-3 px-1">
-      {Object.keys(alternativas).map((key) => {
-        return (
-          <Alternativa
-            key={key}
-            texto={alternativas[key]}
-            id={key}
-            onClick={(e) => handleClick(e)}
-          />
-        );
-      })}
+      <Alternativa texto={data.R1} onClick={(e) => handleClick(e)} id="1" />
+      <Alternativa texto={data.R2} onClick={(e) => handleClick(e)} id="2" />
+      <Alternativa texto={data.R3} onClick={(e) => handleClick(e)} id="3" />
+      <Alternativa texto={data.R4} onClick={(e) => handleClick(e)} id="4" />
     </div>
   );
 }
 
-export function Pergunta({ pergunta }) {
+export function Pergunta({ pergunta }: { pergunta: string }) {
   return (
     <div className="box-border bg-color3 py-4 px-6 text-white text-justify">
       <h1 className="lowercase first-letter:capitalize text-lg">{pergunta}</h1>
@@ -64,7 +50,7 @@ export function Pergunta({ pergunta }) {
   );
 }
 
-export function PerguntaRespostas() {
+export function PerguntaRespostas({ question }: { question: IQuestion }) {
   function handleClick(e: React.ChangeEvent<HTMLInputElement>): void {
     console.log(e.target.id);
   }
@@ -72,8 +58,8 @@ export function PerguntaRespostas() {
   return (
     <main className="animate-fade-in">
       <div className="h-96 bg-color3 bg-opacity-60 border-4 border-color3 rounded-xl">
-        <Pergunta pergunta="QUAL DESSES INGREDIENTES TAMBÉM É USADO NA FRITURA DE ALIMENTOS?" />
-        <Alternativas handleClick={handleClick} />
+        <Pergunta pergunta={question.Pergunta} />
+        <Alternativas data={question} handleClick={handleClick} />
       </div>
     </main>
   );

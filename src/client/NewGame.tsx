@@ -21,8 +21,8 @@ function NewGame() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    socket?.on("redirect-play", () => {
-      navigate("/play");
+    socket?.on("redirect", (payload) => {
+      navigate(payload);
     });
   }, [socket]);
 
@@ -41,7 +41,7 @@ function NewGame() {
   function handlePlayButton() {
     localStorage.setItem("rr-materias", JSON.stringify(subjects));
     console.log("vou jogar!", subjects);
-    socket?.emit("newgame", subjects);
+    socket?.emit("newGame", subjects);
   }
 
   return (

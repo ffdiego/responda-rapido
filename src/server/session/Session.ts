@@ -8,11 +8,11 @@ import { ISubject } from "../questions/IQuestions";
 export class Session {
   socket: Socket<InterServerEvents>;
   database: MongoDatabase;
-  game: Game | null;
+  game: Game | null = null;
+  round: number = 0;
 
   constructor(socket: Socket, database: MongoDatabase) {
     this.socket = socket;
-    this.game = null;
     this.database = database;
     this.createListeners();
   }
@@ -25,7 +25,6 @@ export class Session {
     });
 
     socket.on("playRequestQuestions", async () => {
-      console.log(socket.id, "play-enterpage");
       if (!this.game) {
         socket.emit("redirect", "/dash");
       } else {
@@ -46,7 +45,15 @@ export class Session {
     });
   }
 
-  start() {}
+  start() {
+    this.emitQuestion();
+  }
+
+  emitQuestion() {
+    const currentQuestion = this.game?.questions[this.round];
+    if (!currentQuestion) throw new Error("No question to emit!");
+    this.socket.emit("showQuestion", currentQuestion);
+  }
 
   emitNewUUID() {
     const uuid = v4();

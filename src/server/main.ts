@@ -10,6 +10,7 @@ const server = http.createServer(app);
 const port = process.env.PORT || 3000;
 const production = process.env.NODE_ENV === "production";
 const database = new MongoDatabase();
+const sessions = [];
 
 let io: socketio.Server;
 
@@ -34,6 +35,7 @@ if (production) {
 io.on("connection", (socket) => {
   console.log("[CON]", socket.id);
   const session = new Session(socket, database);
+  sessions.push(session);
   socket.on("disconnect", (reason) => {
     console.log(`[OFF] ${socket.id} due to ${reason}`);
   });
