@@ -3,12 +3,14 @@ import { IDatabase } from "../database/IDatabase";
 import { IQuestion, ISubject } from "../questions/IQuestions";
 
 import { writeFile } from "fs";
+import { IResults } from "../events/IEvents";
 
 export class Game {
   subjects: ISubject[];
-  questions: IQuestion[];
   database: IDatabase;
   socket: Socket;
+  questions: IQuestion[] = [];
+  results: IResults[] = [];
 
   constructor(subjects: ISubject[], database: IDatabase, socket: Socket) {
     if (!subjects) {
@@ -17,7 +19,6 @@ export class Game {
     this.subjects = subjects;
     this.database = database;
     this.socket = socket;
-    this.questions = [];
   }
 
   async prepareQuestions() {

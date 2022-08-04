@@ -3,7 +3,6 @@ import { v4 } from "uuid";
 import { MongoDatabase } from "../database/MongoDatabase";
 import { InterServerEvents } from "../events/IEvents";
 import { Game } from "../game/Game";
-import { ISubject } from "../questions/IQuestions";
 
 export class Session {
   socket: Socket<InterServerEvents>;
@@ -46,11 +45,12 @@ export class Session {
   }
 
   start() {
-    this.emitQuestion();
+    this.emitQuestion(0);
+    const now = new Date();
   }
 
-  emitQuestion() {
-    const currentQuestion = this.game?.questions[this.round];
+  emitQuestion(round: number) {
+    const currentQuestion = this.game?.questions[round];
     if (!currentQuestion) throw new Error("No question to emit!");
     this.socket.emit("showQuestion", currentQuestion);
   }
