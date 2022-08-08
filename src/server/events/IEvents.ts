@@ -17,7 +17,8 @@ export interface InterServerEvents {
   redirect(page: "/dash" | "/play" | "/login"): void;
 
   //player events
-  inputsEnable(): void;
-  inputsDisable(): void;
+  inputEnable(): void;
+  inputDisable(): void;
   playerAnswer(answer: number): void;
+  highlight(alternative: number, flash: boolean): void;
 }

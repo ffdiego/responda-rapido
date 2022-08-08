@@ -3,12 +3,14 @@ import { v4 } from "uuid";
 import { MongoDatabase } from "../database/MongoDatabase";
 import { InterServerEvents } from "../events/IEvents";
 import { Game } from "../game/Game";
+import { Round } from "./Round";
 
 export class Session {
   socket: Socket<InterServerEvents>;
   database: MongoDatabase;
   game: Game | null = null;
   round: number = 0;
+  currentRound: Round | null = null;
 
   constructor(socket: Socket, database: MongoDatabase) {
     this.socket = socket;
@@ -42,10 +44,15 @@ export class Session {
         this.start();
       }
     });
+    socket.on("playerAnswer", (answer) => {
+      if (this.currentRound) {
+        this.currentRound.registerAnswer(answer);
+      }
+    });
   }
 
   start() {
-    this.emitQuestion(0);
+    this.emitQuestion();
     const now = new Date();
   }
 
@@ -54,6 +61,18 @@ export class Session {
     const currentQuestion = this.game?.questions[round];
     if (!currentQuestion) throw new Error("No question to emit!");
     this.socket.emit("showQuestion", currentQuestion);
+  }
+
+  input(bool: boolean) {
+    if (bool) {
+      this.socket.emit("inputEnable");
+    } else {
+      this.socket.emit("inputDisable");
+    }
+  }
+
+  highlight(alternative: number, flash: boolean) {
+    this.socket.emit("highlight", alternative, flash);
   }
 
   private emitNewUUID() {
