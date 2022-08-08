@@ -15,4 +15,9 @@ export interface InterServerEvents {
   showResults(results: IResults): void;
 
   redirect(page: "/dash" | "/play" | "/login"): void;
+
+  //player events
+  inputsEnable(): void;
+  inputsDisable(): void;
+  playerAnswer(answer: number): void;
 }

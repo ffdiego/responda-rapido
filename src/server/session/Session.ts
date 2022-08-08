@@ -49,13 +49,14 @@ export class Session {
     const now = new Date();
   }
 
-  emitQuestion(round: number) {
+  emitQuestion() {
+    const round = this.round;
     const currentQuestion = this.game?.questions[round];
     if (!currentQuestion) throw new Error("No question to emit!");
     this.socket.emit("showQuestion", currentQuestion);
   }
 
-  emitNewUUID() {
+  private emitNewUUID() {
     const uuid = v4();
     this.socket.emit("uuidChange", uuid);
   }

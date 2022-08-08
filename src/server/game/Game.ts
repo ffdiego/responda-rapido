@@ -11,6 +11,7 @@ export class Game {
   socket: Socket;
   questions: IQuestion[] = [];
   results: IResults[] = [];
+  time: number = 30;
 
   constructor(subjects: ISubject[], database: IDatabase, socket: Socket) {
     if (!subjects) {
