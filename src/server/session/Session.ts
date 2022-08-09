@@ -44,7 +44,7 @@ export class Session {
       if (!this.game) {
         socket.emit("redirect", "/dash");
       } else {
-        this.start();
+        this.startGame();
       }
     });
     socket.on("playerAnswer", (answer) => {
@@ -67,7 +67,7 @@ export class Session {
     this.game.questions = [...easy, ...medi, ...hard, ...mill];
   }
 
-  start() {
+  async startGame() {
     this.currentRound = new Round(this);
   }
 

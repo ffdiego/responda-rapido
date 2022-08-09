@@ -11,10 +11,13 @@ export class Round {
   timeCreditsStart: number = 0;
   timeCreditsEnd: number = 0;
   timer: NodeJS.Timeout | null = null;
-  roundEnded = false;
   question: IQuestion;
   chosenAnswer: number = 0;
   result: IResults | null = null;
+
+  roundEnd: Promise<void> | null = null;
+  roundEnded = false;
+  roundEnder?(value: void | PromiseLike<void>): void;
 
   constructor(session: Session) {
     this.session = session;
@@ -23,6 +26,10 @@ export class Round {
     this.timer = setTimeout(() => {
       if (!this.roundEnded) this.endRound();
     }, this.timeCreditsStart * 1000);
+
+    this.roundEnd = new Promise((resolve) => {
+      this.testEnder = resolve;
+    });
   }
 
   async startRound() {
@@ -60,8 +67,9 @@ export class Round {
     await sleep(3000);
 
     this.result = {
-      money: prize.money,
       time: prize.time,
+      money: prize.money,
     };
+    this.session.game.saveResults(this.result);
   }
 }
