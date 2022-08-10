@@ -1,103 +1,44 @@
 import { Socket } from "socket.io";
-import { v4 } from "uuid";
+import { EventsHandler } from "../events/EventsHandler";
 import { MongoDatabase } from "../database/MongoDatabase";
-import { InterServerEvents } from "../events/IEvents";
 import { Game } from "../game/Game";
 import { ISubject } from "../questions/IQuestions";
-import { Round } from "./Round";
+import { Round } from "../round/Round";
+import { sleep } from "../helper/sleep";
 
 export class Session {
-  socket: Socket<InterServerEvents>;
+  event: EventsHandler;
   database: MongoDatabase;
   subjects: ISubject[] = [];
   game: Game;
+  gameRunning: boolean = false;
   roundNumber: number = 0;
-  currentRound: Round | null = null;
+  currentRound?: Round;
 
   constructor(socket: Socket, database: MongoDatabase) {
-    this.socket = socket;
     this.database = database;
+    this.event = new EventsHandler(this, socket);
     this.game = new Game();
-    this.createListeners();
   }
 
-  createListeners() {
-    const socket = this.socket;
-    socket.on("newGame", (subjects) => {
-      this.subjects = subjects;
-      socket.emit("redirect", "/play");
-    });
-
-    socket.on("playRequestQuestions", async () => {
-      if (!this.game) {
-        socket.emit("redirect", "/dash");
-      } else {
-        socket.emit("changeState", "loading");
-        console.log("Preparing questions!");
-        await this.prepareQuestions(this.subjects);
-        console.log("inviting players!");
-        socket.emit("changeState", "start");
-      }
-    });
-    socket.on("playRequestStartGame", () => {
-      console.log(socket.id, "-- Started the game --");
-      if (!this.game) {
-        socket.emit("redirect", "/dash");
-      } else {
-        this.startGame();
-      }
-    });
-    socket.on("playerAnswer", (answer) => {
-      if (this.currentRound) {
-        this.currentRound.registerAnswer(answer);
-      }
-    });
-  }
-
-  async prepareQuestions(subjects: ISubject[]) {
-    if (!subjects) {
+  async prepareQuestions() {
+    if (!this.subjects) {
       throw new Error("subjects not defined");
     }
-
+    const subjects = this.subjects;
     const easy = await this.database.getQuestions(5, subjects, 0);
     const medi = await this.database.getQuestions(5, subjects, 1);
     const hard = await this.database.getQuestions(5, subjects, 2);
     const mill = await this.database.getQuestions(1, subjects, 3);
 
     this.game.questions = [...easy, ...medi, ...hard, ...mill];
+    this.gameRunning = true;
   }
 
-  async startGame() {
-    for (let i = 0; i < 16; i++) {
-      this.roundNumber = i;
-      console.log("starting question", i);
-      this.currentRound = new Round(this);
-      this.currentRound.startRound();
-      await this.currentRound.roundEnd;
-    }
-  }
-
-  emitQuestion() {
-    const round = this.roundNumber;
-    const currentQuestion = this.game?.questions[round];
-    if (!currentQuestion) throw new Error("No question to emit!");
-    this.socket.emit("showQuestion", currentQuestion);
-  }
-
-  input(bool: boolean) {
-    if (bool) {
-      this.socket.emit("inputEnable");
-    } else {
-      this.socket.emit("inputDisable");
-    }
-  }
-
-  highlight(color: "red" | "green", alternative: number, flash?: boolean) {
-    this.socket.emit("highlight", color, alternative, flash);
-  }
-
-  private emitNewUUID() {
-    const uuid = v4();
-    this.socket.emit("uuidChange", uuid);
+  detachGame() {
+    console.log("player left");
+    this.gameRunning = false;
+    delete this.currentRound;
+    this.game = new Game();
   }
 }

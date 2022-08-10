@@ -16,6 +16,10 @@ export interface InterServerEvents {
   showResults(results: IResults): void;
 
   redirect(page: "/dash" | "/play" | "/login"): void;
+  leaveGame(): void;
+
+  clockSet(time: number): void;
+  clockPause(bool: boolean): void;
 
   //player events
   inputEnable(): void;

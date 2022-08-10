@@ -46,6 +46,10 @@ function Play() {
       setScreen(2);
       setQuestion(question);
     });
+    socket?.on("showResults", (results) => {
+      setScreen(3);
+      setResultsData(results);
+    });
 
     return () => {
       socket?.off();

@@ -2,7 +2,7 @@ import { IResults } from "../events/IEvents";
 import { Prize } from "../game/Prize";
 import { sleep } from "../helper/sleep";
 import { IQuestion } from "../questions/IQuestions";
-import { Session } from "./Session";
+import { Session } from "../session/Session";
 
 export class Round {
   session: Session;
@@ -10,13 +10,10 @@ export class Round {
   timeRoundEnd: number = 0;
   timeCreditsStart: number = 0;
   timeCreditsEnd: number = 0;
-  timer: NodeJS.Timeout | null = null;
+  timer?: NodeJS.Timeout;
   question: IQuestion;
   chosenAnswer: number = 0;
-  result: IResults | null = null;
-
-  roundEnd: Promise<void> | null = null;
-  roundEnder?(value: void | PromiseLike<void>): void;
+  result?: IResults;
 
   constructor(session: Session) {
     this.session = session;
@@ -25,43 +22,53 @@ export class Round {
     this.timer = setTimeout(() => {
       this.endRound();
     }, this.timeCreditsStart * 1000);
-
-    this.roundEnd = new Promise((resolve) => {
-      this.roundEnder = resolve;
-    });
   }
 
-  async startRound() {
+  startRound() {
     this.timeRoundStart = new Date().getTime();
-    this.session.emitQuestion();
-    this.session.input(true);
+    this.session.event.emitQuestion();
+    this.session.event.inputAllow(true);
+    this.session.event.setClock(this.session.game.time);
+    this.session.event.pauseClock(false);
   }
 
   registerAnswer(answer: number) {
-    this.session.input(false);
+    console.log("player answered", answer);
+    this.session.event.pauseClock(true);
+    this.session.event.inputAllow(false);
     this.chosenAnswer = answer;
+    this.endRound();
   }
 
   async endRound() {
     this.timer && clearTimeout(this.timer);
     this.timeRoundEnd = new Date().getTime();
-    const timeSpent = this.timeRoundEnd - this.timeRoundStart;
+    const timeSpent = (this.timeRoundEnd - this.timeRoundStart) / 1000;
     let prize = { money: 0, time: 0 };
 
     if (this.chosenAnswer)
-      this.session.highlight("green", this.chosenAnswer, true);
+      this.session.event.highlight("green", this.chosenAnswer, true);
 
     //check if answer is correct
+    console.log("========");
+    console.log(
+      "Jogador escolheu:",
+      this.chosenAnswer,
+      "A correta é:",
+      this.question.Certa
+    );
+    console.log("Tempo gasto:", timeSpent, "/", this.timeCreditsStart);
+    console.log("========");
     await sleep(3000);
     if (this.question.Certa === this.chosenAnswer) {
-      this.session.highlight("green", this.chosenAnswer, false);
+      this.session.event.highlight("green", this.chosenAnswer, false);
       prize.money =
         Prize(this.session.roundNumber) *
         (1 - timeSpent / this.timeCreditsStart);
       prize.time = 5;
     } else {
-      this.session.highlight("red", this.chosenAnswer, true);
-      this.session.highlight("green", this.chosenAnswer, false);
+      this.session.event.highlight("red", this.chosenAnswer, true);
+      this.session.event.highlight("green", this.chosenAnswer, false);
       prize.time = -5;
     }
     await sleep(3000);
@@ -70,8 +77,6 @@ export class Round {
       time: prize.time,
       money: prize.money,
     };
-    this.session.game.saveResults(this.result);
-
-    if (this.roundEnder) this.roundEnder();
+    this.session.goToNextRound();
   }
 }
