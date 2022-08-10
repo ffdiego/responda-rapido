@@ -1,10 +1,12 @@
 import { IQuestion } from "../../../server/questions/IQuestions";
 
-export function QuestionScreen({ data }: { data: IQuestion }) {
-  function handleClick(n: number): void {
-    console.log(n);
-  }
-
+export function QuestionScreen({
+  data,
+  handleClick,
+}: {
+  data: IQuestion;
+  handleClick: (n: number) => void;
+}) {
   return (
     <main className="animate-fade-in">
       <div className="h-96 bg-color3 bg-opacity-60 border-4 border-color3 rounded-xl">
@@ -19,7 +21,7 @@ function Alternativa({
   texto,
   onClick,
 }: {
-  texto: string;
+  texto?: string;
   onClick: () => void;
 }) {
   return (

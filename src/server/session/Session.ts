@@ -11,7 +11,7 @@ export class Session {
   database: MongoDatabase;
   subjects: ISubject[] = [];
   game: Game;
-  round: number = 0;
+  roundNumber: number = 0;
   currentRound: Round | null = null;
 
   constructor(socket: Socket, database: MongoDatabase) {
@@ -68,11 +68,17 @@ export class Session {
   }
 
   async startGame() {
-    this.currentRound = new Round(this);
+    for (let i = 0; i < 16; i++) {
+      this.roundNumber = i;
+      console.log("starting question", i);
+      this.currentRound = new Round(this);
+      this.currentRound.startRound();
+      await this.currentRound.roundEnd;
+    }
   }
 
   emitQuestion() {
-    const round = this.round;
+    const round = this.roundNumber;
     const currentQuestion = this.game?.questions[round];
     if (!currentQuestion) throw new Error("No question to emit!");
     this.socket.emit("showQuestion", currentQuestion);

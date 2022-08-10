@@ -21,7 +21,10 @@ export default function Layout() {
 
 function Play() {
   const [screen, setScreen] = useState(0);
-  const [resultsData, setResultsData] = useState<IResults>({ moneyTotal: 0 });
+  const [resultsData, setResultsData] = useState<IResults>({
+    money: 0,
+    time: 0,
+  });
   const [question, setQuestion] = useState<IQuestion>({ Pergunta: "Teste" });
   const navigate = useNavigate();
 
@@ -53,11 +56,17 @@ function Play() {
     socket?.emit("playRequestStartGame");
   }
 
+  function handleClick(n: number) {
+    socket?.emit("playerAnswer", n);
+  }
+
   return (
     <>
       {screen == 0 && <LoadingScreen />}
       {screen == 1 && <StartScreen handleStartGame={handleStartGame} />}
-      {screen == 2 && <QuestionScreen data={question} />}
+      {screen == 2 && (
+        <QuestionScreen data={question} handleClick={handleClick} />
+      )}
       {screen == 3 && <ResultsScreen data={resultsData} />}
     </>
   );

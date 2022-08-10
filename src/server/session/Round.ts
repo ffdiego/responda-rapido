@@ -16,19 +16,18 @@ export class Round {
   result: IResults | null = null;
 
   roundEnd: Promise<void> | null = null;
-  roundEnded = false;
   roundEnder?(value: void | PromiseLike<void>): void;
 
   constructor(session: Session) {
     this.session = session;
     this.timeCreditsStart = this.session.game.time;
-    this.question = this.session.game.questions[this.session.round];
+    this.question = this.session.game.questions[this.session.roundNumber];
     this.timer = setTimeout(() => {
-      if (!this.roundEnded) this.endRound();
+      this.endRound();
     }, this.timeCreditsStart * 1000);
 
     this.roundEnd = new Promise((resolve) => {
-      this.testEnder = resolve;
+      this.roundEnder = resolve;
     });
   }
 
@@ -44,7 +43,7 @@ export class Round {
   }
 
   async endRound() {
-    this.roundEnded = true;
+    this.timer && clearTimeout(this.timer);
     this.timeRoundEnd = new Date().getTime();
     const timeSpent = this.timeRoundEnd - this.timeRoundStart;
     let prize = { money: 0, time: 0 };
@@ -57,7 +56,8 @@ export class Round {
     if (this.question.Certa === this.chosenAnswer) {
       this.session.highlight("green", this.chosenAnswer, false);
       prize.money =
-        Prize(this.session.round) * (1 - timeSpent / this.timeCreditsStart);
+        Prize(this.session.roundNumber) *
+        (1 - timeSpent / this.timeCreditsStart);
       prize.time = 5;
     } else {
       this.session.highlight("red", this.chosenAnswer, true);
@@ -71,5 +71,7 @@ export class Round {
       money: prize.money,
     };
     this.session.game.saveResults(this.result);
+
+    if (this.roundEnder) this.roundEnder();
   }
 }
