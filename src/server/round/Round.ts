@@ -1,11 +1,10 @@
 import { IResults } from "../events/IEvents";
+import { Game } from "../game/Game";
 import { Prize } from "../game/Prize";
-import { sleep } from "../helper/sleep";
 import { IQuestion } from "../questions/IQuestions";
-import { Session } from "../session/Session";
 
 export class Round {
-  session: Session;
+  game: Game;
   timeRoundStart: number = 0;
   timeRoundEnd: number = 0;
   timeCreditsStart: number = 0;
@@ -15,9 +14,10 @@ export class Round {
   chosenAnswer: number = 0;
   result?: IResults;
 
-  constructor(session: Session) {
+  constructor(game: Game) {
+    this.game = game;
     this.session = session;
-    this.timeCreditsStart = this.session.game.time;
+    this.timeCreditsStart = this.game.session?.game.time;
     this.question = this.session.game.questions[this.session.roundNumber];
     this.timer = setTimeout(() => {
       this.endRound();

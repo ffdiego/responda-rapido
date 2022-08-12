@@ -24,6 +24,8 @@ export class Game {
     this.currentRound.startRound();
   }
 
+  showResults() {}
+
   async goToNextRound() {
     this.event.emitResults();
     await sleep(5000);

@@ -21,6 +21,8 @@ export class Session {
     this.game = new Game();
   }
 
+  async gameLoop() {}
+
   async prepareQuestions() {
     if (!this.subjects) {
       throw new Error("subjects not defined");
