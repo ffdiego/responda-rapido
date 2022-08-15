@@ -18,21 +18,33 @@ export class Game {
     this.session = session;
   }
 
-  startGame() {
+  startQuestion() {
     console.log("starting question", this.roundNumber);
     this.currentRound = new Round(this);
     this.currentRound.startRound();
   }
 
-  showResults() {}
+  showResults() {
+    this.session?.event.emitResults();
+  }
 
-  async goToNextRound() {
+  goToNextRound() {
+    this.saveResults(this.currentRound?.result);
+    delete this.currentRound;
+    this.roundNumber++;
+  }
+
+  async goToNextRound_old() {
     this.event.emitResults();
     await sleep(5000);
     this.game.saveResults(this.currentRound?.result);
     delete this.currentRound;
     this.roundNumber++;
     this.startQuestion();
+  }
+
+  getTime() {
+    return this.time;
   }
 
   saveRound(round: Round) {
