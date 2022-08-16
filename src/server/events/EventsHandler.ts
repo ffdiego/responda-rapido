@@ -34,22 +34,20 @@ export class EventsHandler {
     });
     socket.on("playRequestStartGame", () => {
       console.log(socket.id, "-- Started the game --");
-      if (!session.game) {
-        socket.emit("redirect", "/dash");
+      if (session.game && !session.gameRunning) {
+        session.gameLoop();
       } else {
-        session.roundNumber = 0;
-        session.gameRunning = true;
-        session.startQuestion();
+        socket.emit("redirect", "/dash");
       }
     });
     socket.on("playerAnswer", (answer) => {
-      if (session.currentRound) {
-        session.currentRound.registerAnswer(answer);
+      if (session.game.currentRound) {
+        session.game.currentRound.registerAnswer(answer);
       }
     });
 
     socket.on("leaveGame", () => {
-      session.playerLeft();
+      session.detachGame();
     });
   }
 

@@ -33,11 +33,12 @@ export class Round {
   }
 
   registerAnswer(answer: number) {
+    if (this.chosenAnswer !== 0) return;
     console.log("player answered", answer);
     this.game.session.event.pauseClock(true);
     this.game.session.event.inputAllow(false);
     this.chosenAnswer = answer;
-    this.endRound();
+    this.endPromiseResolver?.();
   }
 
   endRound() {
@@ -70,6 +71,7 @@ export class Round {
       prize.time = -5;
     }
 
-    this.game.time = this.game.time + prize.time - timeSpent;
+    this.game.time += prize.time - timeSpent;
+    this.game.money += prize.money;
   }
 }

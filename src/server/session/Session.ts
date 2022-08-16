@@ -19,6 +19,7 @@ export class Session {
   }
 
   async gameLoop() {
+    this.gameRunning = true;
     while (this.gameRunning && this.game.roundNumber <= 15) {
       this.game.startRound();
       await Promise.race([
@@ -50,7 +51,6 @@ export class Session {
   detachGame() {
     console.log("player left");
     this.gameRunning = false;
-    delete this.currentRound;
-    this.game = new Game();
+    this.game = new Game(this);
   }
 }
