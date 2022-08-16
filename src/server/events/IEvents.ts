@@ -13,7 +13,7 @@ export interface InterServerEvents {
   playRequestStartGame: () => void;
   changeState(state: "loading" | "start"): void;
   showQuestion(question: IQuestion): void;
-  showResults(results: IResults): void;
+  showStats(results: IResults): void;
 
   redirect(page: "/dash" | "/play" | "/login"): void;
   leaveGame(): void;

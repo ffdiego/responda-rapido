@@ -3,7 +3,6 @@ import { EventsHandler } from "../events/EventsHandler";
 import { MongoDatabase } from "../database/MongoDatabase";
 import { Game } from "../game/Game";
 import { ISubject } from "../questions/IQuestions";
-import { Round } from "../round/Round";
 import { sleep } from "../helper/sleep";
 
 export class Session {
@@ -12,16 +11,27 @@ export class Session {
   subjects: ISubject[] = [];
   game: Game;
   gameRunning: boolean = false;
-  roundNumber: number = 0;
-  currentRound?: Round;
 
   constructor(socket: Socket, database: MongoDatabase) {
     this.database = database;
     this.event = new EventsHandler(this, socket);
-    this.game = new Game();
+    this.game = new Game(this);
   }
 
-  async gameLoop() {}
+  async gameLoop() {
+    while (this.gameRunning && this.game.roundNumber <= 15) {
+      this.game.startRound();
+      await Promise.race([
+        sleep(this.game.time * 1000),
+        this.game.currentRound?.endPromise,
+      ]);
+      this.game.showResults();
+      await sleep(3000);
+      this.game.showStats();
+      await sleep(3000);
+      this.game.goToNextRound();
+    }
+  }
 
   async prepareQuestions() {
     if (!this.subjects) {

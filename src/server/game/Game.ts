@@ -7,7 +7,7 @@ export class Game {
   questions: IQuestion[] = [];
   rounds: Round[] = [];
   results: IResults[] = [];
-  session?: Session;
+  session: Session;
 
   roundNumber: number = 0;
   currentRound?: Round;
@@ -18,29 +18,24 @@ export class Game {
     this.session = session;
   }
 
-  startQuestion() {
+  startRound() {
     console.log("starting question", this.roundNumber);
     this.currentRound = new Round(this);
     this.currentRound.startRound();
   }
 
   showResults() {
-    this.session?.event.emitResults();
+    this.currentRound?.endRound();
+  }
+
+  showStats() {
+    this.session.event.emitStats();
   }
 
   goToNextRound() {
     this.saveResults(this.currentRound?.result);
     delete this.currentRound;
     this.roundNumber++;
-  }
-
-  async goToNextRound_old() {
-    this.event.emitResults();
-    await sleep(5000);
-    this.game.saveResults(this.currentRound?.result);
-    delete this.currentRound;
-    this.roundNumber++;
-    this.startQuestion();
   }
 
   getTime() {

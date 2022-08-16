@@ -73,16 +73,16 @@ export class EventsHandler {
   }
 
   emitQuestion() {
-    const round = this.session.roundNumber;
+    const round = this.session.game.roundNumber;
     const currentQuestion = this.session.game.questions[round];
     if (!currentQuestion) throw new Error("No question to emit!");
     this.socket.emit("showQuestion", currentQuestion);
   }
 
-  emitResults() {
+  emitStats() {
     this.socket.emit(
-      "showResults",
-      this.session.game.results[this.session.roundNumber]
+      "showStats",
+      this.session.game.results[this.session.game.roundNumber]
     );
   }
 
