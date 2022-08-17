@@ -26,6 +26,7 @@ export class Session {
         sleep(this.game.time * 1000),
         this.game.currentRound?.endPromise,
       ]);
+      await sleep(1000);
       this.game.showResults();
       await sleep(3000);
       this.game.showStats();
@@ -45,7 +46,6 @@ export class Session {
     const mill = await this.database.getQuestions(1, subjects, 3);
 
     this.game.questions = [...easy, ...medi, ...hard, ...mill];
-    this.gameRunning = true;
   }
 
   detachGame() {

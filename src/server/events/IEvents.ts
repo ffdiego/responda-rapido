@@ -5,6 +5,12 @@ export interface IResults {
   time: number;
 }
 
+export interface IHighlight {
+  color: "red" | "green";
+  alternative: number;
+  blink?: boolean;
+}
+
 export interface InterServerEvents {
   uuidChange(uuid: string): void;
 
@@ -25,5 +31,5 @@ export interface InterServerEvents {
   inputEnable(): void;
   inputDisable(): void;
   playerAnswer(answer: number): void;
-  highlight(color: "red" | "green", alternative: number, flash?: boolean): void;
+  highlight(arg0: IHighlight): void;
 }

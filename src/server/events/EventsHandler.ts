@@ -33,8 +33,10 @@ export class EventsHandler {
       }
     });
     socket.on("playRequestStartGame", () => {
-      console.log(socket.id, "-- Started the game --");
-      if (session.game && !session.gameRunning) {
+      console.log(socket.id, "requested game");
+      console.log(session.gameRunning, "game running");
+      if (!session.gameRunning) {
+        console.log("starting the game loop");
         session.gameLoop();
       } else {
         socket.emit("redirect", "/dash");

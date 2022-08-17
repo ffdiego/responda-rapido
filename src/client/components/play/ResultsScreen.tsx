@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BsStopwatch } from "react-icons/bs";
-import { IResults } from "../../../server/events/IEvents";
+import { IHighlight, IResults } from "../../../server/events/IEvents";
 import { TitleBar } from "../edges";
 
 export function ResultsScreen({ data }: { data: IResults }) {

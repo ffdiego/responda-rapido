@@ -42,6 +42,13 @@ export class Game {
     return this.time;
   }
 
+  addTime(time: number) {
+    this.time = time;
+  }
+  addMoney(money: number) {
+    this.money += money;
+  }
+
   saveRound(round: Round) {
     this.rounds.push(round);
   }

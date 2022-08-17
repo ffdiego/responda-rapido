@@ -8,7 +8,7 @@ import { useEffect, useState, useContext } from "react";
 import { Container } from "./components/container";
 import SocketContext from "./socket/context";
 import { useNavigate } from "react-router-dom";
-import { IResults } from "../server/events/IEvents";
+import { IHighlight, IResults } from "../server/events/IEvents";
 import { IQuestion } from "../server/questions/IQuestions";
 
 export default function Layout() {
@@ -20,12 +20,17 @@ export default function Layout() {
 }
 
 function Play() {
-  const [screen, setScreen] = useState(0);
+  const [screen, setScreen] = useState(2);
   const [resultsData, setResultsData] = useState<IResults>({
     money: 0,
     time: 0,
   });
   const [question, setQuestion] = useState<IQuestion>({ Pergunta: "Teste" });
+  const [flash, setFlash] = useState<IHighlight>({
+    alternative: 3,
+    color: "green",
+    blink: false,
+  });
   const navigate = useNavigate();
 
   const socket = useContext(SocketContext);
@@ -46,9 +51,12 @@ function Play() {
       setScreen(2);
       setQuestion(question);
     });
-    socket?.on("showResults", (results) => {
+    socket?.on("showStats", (results) => {
       setScreen(3);
       setResultsData(results);
+    });
+    socket?.on("highlight", (payload: IHighlight) => {
+      setFlash(payload);
     });
 
     return () => {
@@ -69,7 +77,11 @@ function Play() {
       {screen == 0 && <LoadingScreen />}
       {screen == 1 && <StartScreen handleStartGame={handleStartGame} />}
       {screen == 2 && (
-        <QuestionScreen data={question} handleClick={handleClick} />
+        <QuestionScreen
+          data={question}
+          handleClick={handleClick}
+          flash={flash}
+        />
       )}
       {screen == 3 && <ResultsScreen data={resultsData} />}
     </>

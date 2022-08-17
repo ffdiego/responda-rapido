@@ -71,7 +71,7 @@ export class Round {
       prize.time = -5;
     }
 
-    this.game.time += prize.time - timeSpent;
-    this.game.money += prize.money;
+    this.game.addTime(prize.time - timeSpent);
+    this.game.addMoney(prize.money);
   }
 }

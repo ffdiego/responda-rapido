@@ -33,29 +33,28 @@ code {
   }
 }
 
+.blink-red {
+  animation-name: flash-red;
+  animation-duration: 500ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.blink-green {
+  animation-name: flash-green;
+  animation-duration: 500ms;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
 @keyframes flash-red {
-  from {
-    background-color: red;
-  }
   to {
-    background-color: #f004;
+    background-color: red;
   }
 }
 
 @keyframes flash-green {
-  from {
+  to {
     background-color: green;
-  }
-  to {
-    background-color: #0f04;
-  }
-}
-
-@keyframes flash-blue {
-  from {
-    background-color: #00f;
-  }
-  to {
-    background-color: #00f4;
   }
 }
