@@ -28,7 +28,7 @@ function Play() {
   const [question, setQuestion] = useState<IQuestion>({ Pergunta: "Teste" });
   const [flash, setFlash] = useState<IHighlight>({
     alternative: 3,
-    color: "green",
+    color: "red",
     blink: false,
   });
   const navigate = useNavigate();

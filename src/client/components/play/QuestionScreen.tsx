@@ -58,7 +58,7 @@ export function Alternativas({
     if (flash.blink) {
       return "blink-" + flash.color;
     } else {
-      return "bg-" + flash.color + "-500";
+      return "blink-" + flash.color + "-once";
     }
   }
 
