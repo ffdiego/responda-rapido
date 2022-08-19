@@ -3,18 +3,31 @@ import { BsStopwatch } from "react-icons/bs";
 import { IHighlight, IResults } from "../../../server/events/IEvents";
 import { TitleBar } from "../edges";
 
-export function ResultsScreen({ data }: { data: IResults }) {
-  const obj = {
-    correct: true,
-    timeRemaining: 25,
-    timeTotal: 30,
-    moneyInitial: 3423.66,
-    prizeInitial: 1500,
-    prizeWithDeductions: 1250,
-    moneyTotal: 4673.66,
-    nextQuestionSubject: "Matemática",
-    nextPrize: 2000,
-  };
+export function ResultsScreen({ data }: { data?: IResults }) {
+  if (!data) {
+    data = {
+      money: {
+        question: 1500,
+        calculated: 1250,
+      },
+      time: {
+        remaining: 25,
+        started: 30,
+      },
+      gains: {
+        time: 5,
+        prize: 1250,
+      },
+      score: {
+        money: 3423.66,
+        time: 25,
+      },
+      nextQuestion: {
+        subject: "INGLES",
+        prize: 666000,
+      },
+    };
+  }
 
   return (
     <main className="animate-fade-in">
@@ -24,33 +37,33 @@ export function ResultsScreen({ data }: { data: IResults }) {
           <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_1s_both] pb-2">
             <p className="w-full font-semibold">Valor desta questão:</p>
             <div className="flex items-center justify-center text-normal">
-              R${obj.prizeInitial} ×
+              R${data.money.question} ×
               <div className="inline-block mx-2">
                 <span className="block border-b-2">25s</span>
                 <span className="block">30s</span>
               </div>
-              =<u className="ml-2 font-semibold">R${obj.prizeWithDeductions}</u>
+              =<u className="ml-2 font-semibold">R${data.money.calculated}</u>
             </div>
           </div>
           <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_2s_both] border-t-4 py-2 flex">
             <p className="font-semibold">Total:</p>
             <div className="w-full pl-20">
               <p className="text-xl">
-                {obj.correct ? "+" : "-"}
+                {data.gains.time > 0 ? "+" : "-"}
                 <BsStopwatch className="inline mx-1" />
-                <b>5s</b>
+                <b>{Math.abs(data.gains.time)}s</b>
               </p>
               <p className="text-xl">
-                + R$<b>{obj.correct ? obj.prizeWithDeductions : 0}</b>
+                + R$<b>{data.gains.prize}</b>
               </p>
             </div>
           </div>
           <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_3s_both] flex flex-col text-center border-4 rounded-xl text-xl py-2">
             <p className="w-full font-semibold">Sua Pontuação agora:</p>
-            <p>R${obj.moneyInitial}</p>
+            <p>R${data.score.money}</p>
             <p>
               <BsStopwatch className="inline mr-1" />
-              {obj.timeRemaining}s
+              {data.score.time}s
             </p>
           </div>
         </div>
@@ -59,14 +72,14 @@ export function ResultsScreen({ data }: { data: IResults }) {
           <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_4s_both]">
             <p className="w-full">Prepare-se!</p>
             <p>
-              Pergunta de <b>{obj.nextQuestionSubject}</b>,
+              Pergunta de <b>{data.nextQuestion.subject}</b>,
             </p>
             <p>
               valendo R$
-              {obj.nextPrize / 1000} Mil!
+              {Math.round(data.nextQuestion.prize / 1000)} Mil!
             </p>
             <div className="w-[90%] h-4 bg-red-600 rounded-xl overflow-hidden mx-auto">
-              <div className="bg-white h-full animate-[fill_60s_linear_1_4s_both]"></div>
+              <div className="bg-white h-full animate-[fill_20s_linear_1_4s_both] duration-1000"></div>
             </div>
           </div>
         </div>

@@ -26,7 +26,6 @@ code {
   animation-timing-function: linear;
   animation-iteration-count: 1;
 }
-
 @keyframes grow {
   50% {
     transform: scale(1.5);
@@ -40,15 +39,6 @@ code {
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
-
-.blink-green {
-  animation-name: flash-green;
-  animation-duration: 300ms;
-  animation-direction: alternate;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-}
-
 .blink-red-once {
   animation-name: flash-red;
   animation-duration: 500ms;
@@ -56,7 +46,13 @@ code {
   animation-timing-function: ease-in-out;
   animation-iteration-count: 1;
 }
-
+.blink-green {
+  animation-name: flash-green;
+  animation-duration: 300ms;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
 .blink-green-once {
   animation-name: flash-green;
   animation-duration: 300ms;
@@ -74,5 +70,32 @@ code {
 @keyframes flash-green {
   to {
     background-color: #0f02;
+  }
+}
+
+.toast-dropdown {
+  animation-name: dropdown, fadeout;
+  animation-duration: 500ms;
+  animation-delay: 0s, 2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: cubic-bezier(0.51, 1.99, 0.46, 0.86);
+  animation-iteration-count: 1;
+}
+
+@keyframes dropdown {
+  from {
+    transform: translateY(-500%) scale(0);
+  }
+  to {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeout {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(0);
   }
 }

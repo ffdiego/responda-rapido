@@ -29,7 +29,7 @@ export function Clock({
 
   useEffect(() => {
     const timer = setInterval(() => {
-      console.log("rodou, pausado", clockPause);
+      //console.log("rodou, pausado", clockPause);
       if (!clockPause && time > 0) setTime(time - 1);
     }, 1000);
     return () => clearTimeout(timer);

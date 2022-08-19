@@ -2,4 +2,11 @@ import { LoadingScreen } from "./LoadingScreen";
 import { StartScreen } from "./StartScreen";
 import { QuestionScreen } from "./QuestionScreen";
 import { ResultsScreen } from "./ResultsScreen";
-export { LoadingScreen, StartScreen, QuestionScreen, ResultsScreen };
+import { ToastMessage } from "./ToastMessage";
+export {
+  LoadingScreen,
+  StartScreen,
+  QuestionScreen,
+  ResultsScreen,
+  ToastMessage,
+};

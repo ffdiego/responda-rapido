@@ -3,6 +3,7 @@ import {
   StartScreen,
   QuestionScreen,
   ResultsScreen,
+  ToastMessage,
 } from "./components/play";
 import { useEffect, useState, useContext } from "react";
 import { Container } from "./components/container";
@@ -20,17 +21,11 @@ export default function Layout() {
 }
 
 function Play() {
-  const [screen, setScreen] = useState(2);
-  const [resultsData, setResultsData] = useState<IResults>({
-    money: 0,
-    time: 0,
-  });
+  const [screen, setScreen] = useState(3);
+  const [message, setMessage] = useState("Corrataa!");
   const [question, setQuestion] = useState<IQuestion>({ Pergunta: "Teste" });
-  const [flash, setFlash] = useState<IHighlight>({
-    alternative: 3,
-    color: "red",
-    blink: false,
-  });
+  const [flash, setFlash] = useState<IHighlight>({});
+  const [resultsData, setResultsData] = useState<IResults>();
   const navigate = useNavigate();
 
   const socket = useContext(SocketContext);
@@ -58,6 +53,9 @@ function Play() {
     socket?.on("highlight", (payload: IHighlight) => {
       setFlash(payload);
     });
+    socket?.on("sendOverlayMessage", (message) => {
+      setMessage(message);
+    });
 
     return () => {
       socket?.off();
@@ -84,6 +82,7 @@ function Play() {
         />
       )}
       {screen == 3 && <ResultsScreen data={resultsData} />}
+      <ToastMessage message={message} />
     </>
   );
 }

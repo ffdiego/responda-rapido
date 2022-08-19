@@ -9,12 +9,47 @@ export function QuestionScreen({
   data: IQuestion;
   handleClick: (n: number) => void;
   flash?: IHighlight;
+  inputDisabled?: boolean;
 }) {
+  function additionalClasses() {
+    if (!flash) return "";
+    if (flash.blink) {
+      return "blink-" + flash.color;
+    } else {
+      return "blink-" + flash.color + "-once";
+    }
+  }
+
   return (
     <main className="animate-fade-in">
       <div className="h-96 bg-color3 bg-opacity-60 border-4 border-color3 rounded-xl">
-        <Pergunta pergunta={data.Pergunta} />
-        <Alternativas data={data} handleClick={handleClick} flash={flash} />
+        <div className="box-border bg-color3 py-4 px-6 text-white text-justify">
+          <h1 className="lowercase first-letter:capitalize text-lg">
+            {data.Pergunta}
+          </h1>
+        </div>
+        <div className="flex flex-col gap-5 flex-1 my-3 px-1">
+          <Alternativa
+            texto={data.R1}
+            onClick={() => handleClick(1)}
+            classes={flash?.alternative === 1 ? additionalClasses() : ""}
+          />
+          <Alternativa
+            texto={data.R2}
+            onClick={() => handleClick(2)}
+            classes={flash?.alternative === 2 ? additionalClasses() : ""}
+          />
+          <Alternativa
+            texto={data.R3}
+            onClick={() => handleClick(3)}
+            classes={flash?.alternative === 3 ? additionalClasses() : ""}
+          />
+          <Alternativa
+            texto={data.R4}
+            onClick={() => handleClick(4)}
+            classes={flash?.alternative === 4 ? additionalClasses() : ""}
+          />
+        </div>
       </div>
     </main>
   );
@@ -39,59 +74,5 @@ function Alternativa({
     >
       {texto || "RESPOSTAS kfjsljgsoi"}
     </button>
-  );
-}
-
-export function Alternativas({
-  data,
-  handleClick,
-  flash,
-}: {
-  data: IQuestion;
-  handleClick: Function;
-  flash?: IHighlight;
-}) {
-  console.log("flash", flash);
-
-  function colorClass() {
-    if (!flash) return "";
-    if (flash.blink) {
-      return "blink-" + flash.color;
-    } else {
-      return "blink-" + flash.color + "-once";
-    }
-  }
-
-  return (
-    <div className="flex flex-col gap-5 flex-1 my-3 px-1">
-      <Alternativa
-        texto={data.R1}
-        onClick={() => handleClick(1)}
-        classes={flash?.alternative === 1 ? colorClass() : ""}
-      />
-      <Alternativa
-        texto={data.R2}
-        onClick={() => handleClick(2)}
-        classes={flash?.alternative === 2 ? colorClass() : ""}
-      />
-      <Alternativa
-        texto={data.R3}
-        onClick={() => handleClick(3)}
-        classes={flash?.alternative === 3 ? colorClass() : ""}
-      />
-      <Alternativa
-        texto={data.R4}
-        onClick={() => handleClick(4)}
-        classes={flash?.alternative === 4 ? colorClass() : ""}
-      />
-    </div>
-  );
-}
-
-function Pergunta({ pergunta }: { pergunta: string }) {
-  return (
-    <div className="box-border bg-color3 py-4 px-6 text-white text-justify">
-      <h1 className="lowercase first-letter:capitalize text-lg">{pergunta}</h1>
-    </div>
   );
 }

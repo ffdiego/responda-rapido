@@ -1,13 +1,31 @@
 import { IQuestion, ISubject } from "../questions/IQuestions";
 
 export interface IResults {
-  money: number;
-  time: number;
+  money: {
+    question: number;
+    calculated: number;
+  };
+  time: {
+    remaining: number;
+    started: number;
+  };
+  gains: {
+    time: number;
+    prize: number;
+  };
+  score: {
+    money: number;
+    time: number;
+  };
+  nextQuestion: {
+    subject: ISubject;
+    prize: number;
+  };
 }
 
 export interface IHighlight {
-  color: "red" | "green";
-  alternative: number;
+  color?: "red" | "green";
+  alternative?: number;
   blink?: boolean;
 }
 
@@ -27,9 +45,10 @@ export interface InterServerEvents {
   clockSet(time: number): void;
   clockPause(bool: boolean): void;
 
-  //player events
+  //play events
   inputEnable(): void;
   inputDisable(): void;
   playerAnswer(answer: number): void;
   highlight(arg0: IHighlight): void;
+  sendOverlayMessage(message: string): void;
 }
