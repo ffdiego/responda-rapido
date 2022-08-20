@@ -1,7 +1,7 @@
 import { Socket } from "socket.io";
 import { v4 } from "uuid";
 import { Session } from "../session/Session";
-import { InterServerEvents } from "./IEvents";
+import { IHighlight, InterServerEvents } from "./IEvents";
 
 export class EventsHandler {
   session: Session;
@@ -61,8 +61,8 @@ export class EventsHandler {
     }
   }
 
-  highlight(color: "red" | "green", alternative: number, flash?: boolean) {
-    this.socket.emit("highlight", color, alternative, flash);
+  highlight(payload: IHighlight) {
+    this.socket.emit("highlight", payload);
   }
 
   setClock(time: number) {
@@ -70,6 +70,10 @@ export class EventsHandler {
   }
   pauseClock(bool: boolean) {
     this.socket.emit("clockPause", bool);
+  }
+
+  showToasterMessage(message: string) {
+    this.socket.emit("toasterMessage", message);
   }
 
   emitQuestion() {

@@ -79,7 +79,7 @@ export function ResultsScreen({ data }: { data?: IResults }) {
               {Math.round(data.nextQuestion.prize / 1000)} Mil!
             </p>
             <div className="w-[90%] h-4 bg-red-600 rounded-xl overflow-hidden mx-auto">
-              <div className="bg-white h-full animate-[fill_20s_linear_1_4s_both] duration-1000"></div>
+              <div className="bg-white h-full animate-[fill_20s_linear_1_0s_both]"></div>
             </div>
           </div>
         </div>

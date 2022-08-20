@@ -53,7 +53,7 @@ function Play() {
     socket?.on("highlight", (payload: IHighlight) => {
       setFlash(payload);
     });
-    socket?.on("sendOverlayMessage", (message) => {
+    socket?.on("toasterMessage", (message) => {
       setMessage(message);
     });
 

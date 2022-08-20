@@ -27,7 +27,6 @@ export class Round {
   startRound() {
     this.timeStart = new Date().getTime();
     this.game.session.event.emitQuestion();
-    this.game.session.event.inputAllow(true);
     this.game.session.event.setClock(this.game.time);
     this.game.session.event.pauseClock(false);
   }
@@ -36,7 +35,6 @@ export class Round {
     if (this.chosenAnswer !== 0) return;
     console.log("player answered", answer);
     this.game.session.event.pauseClock(true);
-    this.game.session.event.inputAllow(false);
     this.chosenAnswer = answer;
     this.endPromiseResolver?.();
   }

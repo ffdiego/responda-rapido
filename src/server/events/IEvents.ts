@@ -50,5 +50,5 @@ export interface InterServerEvents {
   inputDisable(): void;
   playerAnswer(answer: number): void;
   highlight(arg0: IHighlight): void;
-  sendOverlayMessage(message: string): void;
+  toasterMessage(message: string): void;
 }
