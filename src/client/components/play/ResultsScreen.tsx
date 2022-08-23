@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BsStopwatch } from "react-icons/bs";
 import { IHighlight, IResults } from "../../../server/events/IEvents";
 import { TitleBar } from "../edges";

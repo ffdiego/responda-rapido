@@ -14,6 +14,11 @@ export class Game {
   time: number = 30;
   money: number = 0;
 
+  currentPrize = {
+    money: 0,
+    time: 0,
+  };
+
   constructor(session: Session) {
     this.session = session;
   }
@@ -33,6 +38,7 @@ export class Game {
   }
 
   goToNextRound() {
+    this.currentPrize = { money: 0, time: 0 };
     this.saveResults(this.currentRound?.result);
     delete this.currentRound;
     this.roundNumber++;
@@ -43,10 +49,14 @@ export class Game {
   }
 
   addTime(time: number) {
-    this.time = time;
+    const roundedTime = Math.ceil(time);
+    console.log("adding time", roundedTime);
+    this.time += Math.ceil(roundedTime);
   }
   addMoney(money: number) {
-    this.money += money;
+    const roundedMoney = Math.ceil(money * 100) / 100;
+    console.log("adding money", roundedMoney);
+    this.money += roundedMoney;
   }
 
   saveRound(round: Round) {

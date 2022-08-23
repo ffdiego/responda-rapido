@@ -49,6 +49,6 @@ export interface InterServerEvents {
   inputEnable(): void;
   inputDisable(): void;
   playerAnswer(answer: number): void;
-  highlight(arg0: IHighlight): void;
+  highlight(payload?: IHighlight): void;
   toasterMessage(message: string): void;
 }

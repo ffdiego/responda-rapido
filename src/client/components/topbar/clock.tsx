@@ -18,6 +18,7 @@ export function Clock({
       setTime(time);
     });
     socket?.on("clockPause", (bool) => {
+      console.log("received bool", bool, "to change clock status");
       setClockPause(bool);
     });
 
@@ -29,11 +30,10 @@ export function Clock({
 
   useEffect(() => {
     const timer = setInterval(() => {
-      //console.log("rodou, pausado", clockPause);
       if (!clockPause && time > 0) setTime(time - 1);
     }, 1000);
     return () => clearTimeout(timer);
-  }, [time]);
+  }, [clockPause, time]);
 
   return (
     <div className="text-2xl flex items-center gap-2">

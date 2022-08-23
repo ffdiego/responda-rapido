@@ -21,16 +21,20 @@ export class Session {
   async gameLoop() {
     this.gameRunning = true;
     while (this.gameRunning && this.game.roundNumber <= 15) {
+      console.log("[SESSION] starting round", this.game.roundNumber);
       this.game.startRound();
       await Promise.race([
         sleep(this.game.time * 1000),
         this.game.currentRound?.endPromise,
       ]);
       await sleep(1000);
+      console.log("[SESSION] show results");
       this.game.showResults();
       await sleep(3000);
+      console.log("[SESSION] show stats");
       this.game.showStats();
       await sleep(3000);
+      console.log("[SESSION] next round");
       this.game.goToNextRound();
     }
   }

@@ -1,5 +1,6 @@
 import { Socket } from "socket.io";
 import { v4 } from "uuid";
+import { IQuestion } from "../questions/IQuestions";
 import { Session } from "../session/Session";
 import { IHighlight, InterServerEvents } from "./IEvents";
 
@@ -35,7 +36,7 @@ export class EventsHandler {
     socket.on("playRequestStartGame", () => {
       console.log(socket.id, "requested game");
       console.log(session.gameRunning, "game running");
-      if (!session.gameRunning) {
+      if (!session.gameRunning && session.game.questions) {
         console.log("starting the game loop");
         session.gameLoop();
       } else {
@@ -51,6 +52,9 @@ export class EventsHandler {
     socket.on("leaveGame", () => {
       session.detachGame();
     });
+    socket.on("disconnect", () => {
+      session.detachGame();
+    });
   }
 
   inputAllow(bool: boolean) {
@@ -61,7 +65,7 @@ export class EventsHandler {
     }
   }
 
-  highlight(payload: IHighlight) {
+  highlight(payload?: IHighlight) {
     this.socket.emit("highlight", payload);
   }
 
@@ -76,11 +80,9 @@ export class EventsHandler {
     this.socket.emit("toasterMessage", message);
   }
 
-  emitQuestion() {
-    const round = this.session.game.roundNumber;
-    const currentQuestion = this.session.game.questions[round];
-    if (!currentQuestion) throw new Error("No question to emit!");
-    this.socket.emit("showQuestion", currentQuestion);
+  emitQuestion(question: IQuestion) {
+    if (!question) throw new Error("No question to emit!");
+    this.socket.emit("showQuestion", question);
   }
 
   emitStats() {

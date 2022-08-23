@@ -22,7 +22,7 @@ export default function Layout() {
 
 function Play() {
   const [screen, setScreen] = useState(3);
-  const [message, setMessage] = useState("Corrataa!");
+  const [message, setMessage] = useState("");
   const [question, setQuestion] = useState<IQuestion>({ Pergunta: "Teste" });
   const [flash, setFlash] = useState<IHighlight>({});
   const [resultsData, setResultsData] = useState<IResults>();
@@ -55,6 +55,9 @@ function Play() {
     });
     socket?.on("toasterMessage", (message) => {
       setMessage(message);
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
     });
 
     return () => {
@@ -72,6 +75,7 @@ function Play() {
 
   return (
     <>
+      <ToastMessage message={message} />
       {screen == 0 && <LoadingScreen />}
       {screen == 1 && <StartScreen handleStartGame={handleStartGame} />}
       {screen == 2 && (
@@ -82,7 +86,6 @@ function Play() {
         />
       )}
       {screen == 3 && <ResultsScreen data={resultsData} />}
-      <ToastMessage message={message} />
     </>
   );
 }
