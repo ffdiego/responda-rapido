@@ -3,7 +3,13 @@ import { IResults } from "../../../server/events/IEvents";
 import { WhiteButton } from "../buttons";
 import { TitleBar } from "../edges";
 
-export function ResultsScreen({ data }: { data?: IResults }) {
+export function ResultsScreen({
+  data,
+  handleRequestNewRound,
+}: {
+  data?: IResults;
+  handleRequestNewRound: () => void;
+}) {
   if (!data) {
     data = {
       questionValue: 1500,
@@ -74,7 +80,9 @@ export function ResultsScreen({ data }: { data?: IResults }) {
           </div>
         </div>
         <div className="text-right p-2">
-          <WhiteButton>Estou pronto!</WhiteButton>
+          <WhiteButton onClick={handleRequestNewRound}>
+            Estou pronto!
+          </WhiteButton>
         </div>
       </div>
     </main>

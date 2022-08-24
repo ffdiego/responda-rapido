@@ -15,11 +15,6 @@ export class Game {
   time: number = 30;
   money: number = 0;
 
-  currentPrize = {
-    money: 0,
-    time: 0,
-  };
-
   constructor(session: Session) {
     this.session = session;
   }
@@ -42,8 +37,11 @@ export class Game {
 
   goToNextRound() {
     if (!this.roundEnded) return;
-    this.currentPrize = { money: 0, time: 0 };
-    this.saveResults(this.currentRound?.result);
+    const stats = this.currentRound?.result;
+    if (!stats) throw new Error("Error retrieving stats!");
+    this.results.push(stats);
+    this.time += stats.gains.time;
+    this.money += stats.gains.money;
     delete this.currentRound;
     this.roundNumber++;
   }

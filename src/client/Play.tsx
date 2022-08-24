@@ -73,7 +73,7 @@ function Play() {
     socket?.emit("playerAnswer", n);
   }
 
-  function handleReadyForNextRound() {
+  function handleRequestNewRound() {
     socket?.emit("playNextRound");
   }
 
@@ -89,7 +89,12 @@ function Play() {
           flash={flash}
         />
       )}
-      {screen == 3 && <ResultsScreen data={resultsData} />}
+      {screen == 3 && (
+        <ResultsScreen
+          data={resultsData}
+          handleRequestNewRound={handleRequestNewRound}
+        />
+      )}
     </>
   );
 }
