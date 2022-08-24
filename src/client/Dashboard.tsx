@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ISubject } from "../server/questions/IQuestions";
 import { WhiteButton } from "./components/buttons";
@@ -13,16 +14,19 @@ export default function Layout() {
 
 function Dashboard() {
   const navigate = useNavigate();
-  const salas: { score: number; subjects: ISubject[] }[] = [
+
+  const [pastGames, setPastGames] = useState<
+    { score: number; subjects: ISubject[] }[]
+  >([
     { score: 666.2, subjects: ["INGLES", "MATEMATICA"] },
     { score: 3430.2, subjects: ["PORTUGUES", "MATEMATICA"] },
-  ];
+  ]);
 
   return (
     <div className="bg-color3 mt-2 rounded-xl p-2">
       <WhiteButton onClick={() => navigate("/newgame")}>Novo Jogo</WhiteButton>
       <h1 className="text-xl text-white mt-8">Histórico:</h1>
-      {salas.map((item, index) => (
+      {pastGames.map((item, index) => (
         <Sala key={index} score={item.score} subjects={item.subjects} />
       ))}
     </div>
