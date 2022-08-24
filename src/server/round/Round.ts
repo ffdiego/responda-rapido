@@ -10,6 +10,8 @@ export class Round {
   timeEnd: number = 0;
 
   question: IQuestion;
+  questionValue: number;
+
   chosenAnswer: number = 0;
   result?: IResults;
 
@@ -19,6 +21,7 @@ export class Round {
   constructor(game: Game) {
     this.game = game;
     this.question = this.game.questions[this.game.roundNumber];
+    this.questionValue = Prize(this.game.roundNumber);
     this.endPromise = new Promise((resolve) => {
       this.endPromiseResolver = resolve;
     });
@@ -26,6 +29,7 @@ export class Round {
 
   startRound() {
     this.timeStart = new Date().getTime();
+    this.game.roundEnded = false;
     this.game.session.event.highlight(undefined);
     this.game.session.event.emitQuestion(this.question);
     this.game.session.event.setClock(this.game.time);
@@ -79,7 +83,28 @@ export class Round {
       prize.time = -5;
     }
 
-    this.game.addTime(prize.time - timeSpent);
-    this.game.addMoney(prize.money);
+    this.result = {
+      questionValue: this.questionValue,
+      gains: {
+        money: Math.ceil(prize.money * 100) / 100,
+        time: Math.ceil(prize.time - timeSpent),
+      },
+      score: {
+        money: this.game.money + Math.ceil(prize.money * 100) / 100,
+        time: this.game.time + Math.ceil(prize.time - timeSpent),
+      },
+      time: {
+        remaining: this.game.time + Math.ceil(prize.time - timeSpent),
+        started: this.game.time + Math.ceil(prize.time),
+      },
+      nextQuestion:
+        this.game.roundNumber + 1 <= 15
+          ? {
+              subject: this.game.questions[this.game.roundNumber + 1].Materia,
+              prize: Prize(this.game.roundNumber + 1),
+            }
+          : undefined,
+    };
+    this.game.roundEnded = true;
   }
 }

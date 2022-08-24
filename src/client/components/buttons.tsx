@@ -36,3 +36,20 @@ export function WhiteButton({
     </button>
   );
 }
+
+export function OrangeButton({
+  children,
+  onClick,
+}: {
+  children?: React.ReactNode;
+  onClick?: () => void;
+}) {
+  return (
+    <button
+      className="text-lg font-semibold bg-orange-600 border-2 border-white p-2 px-4 rounded-xl text-white hover:bg-orange-700 duration-300"
+      onClick={onClick}
+    >
+      {children}
+    </button>
+  );
+}

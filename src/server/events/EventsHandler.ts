@@ -2,7 +2,7 @@ import { Socket } from "socket.io";
 import { v4 } from "uuid";
 import { IQuestion } from "../questions/IQuestions";
 import { Session } from "../session/Session";
-import { IHighlight, InterServerEvents } from "./IEvents";
+import { IHighlight, InterServerEvents, IResults } from "./IEvents";
 
 export class EventsHandler {
   session: Session;
@@ -38,10 +38,13 @@ export class EventsHandler {
       console.log(session.gameRunning, "game running");
       if (!session.gameRunning && session.game.questions) {
         console.log("starting the game loop");
-        session.gameLoop();
+        session.playOneRound();
       } else {
         socket.emit("redirect", "/dash");
       }
+    });
+    socket.on("playNextRound", () => {
+      this.session.game.goToNextRound();
     });
     socket.on("playerAnswer", (answer) => {
       if (session.game.currentRound) {
@@ -85,11 +88,8 @@ export class EventsHandler {
     this.socket.emit("showQuestion", question);
   }
 
-  emitStats() {
-    this.socket.emit(
-      "showStats",
-      this.session.game.results[this.session.game.roundNumber]
-    );
+  emitStats(stats: IResults) {
+    this.socket.emit("showStats", stats);
   }
 
   emitNewUUID() {

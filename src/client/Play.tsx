@@ -69,8 +69,12 @@ function Play() {
     socket?.emit("playRequestStartGame");
   }
 
-  function handleClick(n: number) {
+  function handleChoseAlternative(n: number) {
     socket?.emit("playerAnswer", n);
+  }
+
+  function handleReadyForNextRound() {
+    socket?.emit("playNextRound");
   }
 
   return (
@@ -81,7 +85,7 @@ function Play() {
       {screen == 2 && (
         <QuestionScreen
           data={question}
-          handleClick={handleClick}
+          handleClick={handleChoseAlternative}
           flash={flash}
         />
       )}

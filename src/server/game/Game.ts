@@ -11,6 +11,7 @@ export class Game {
 
   roundNumber: number = 0;
   currentRound?: Round;
+  roundEnded: boolean = false;
   time: number = 30;
   money: number = 0;
 
@@ -34,10 +35,13 @@ export class Game {
   }
 
   showStats() {
-    this.session.event.emitStats();
+    const stats = this.currentRound?.result;
+    if (!stats) throw new Error("Error retrieving stats!");
+    this.session.event.emitStats(stats);
   }
 
   goToNextRound() {
+    if (!this.roundEnded) return;
     this.currentPrize = { money: 0, time: 0 };
     this.saveResults(this.currentRound?.result);
     delete this.currentRound;
@@ -46,17 +50,6 @@ export class Game {
 
   getTime() {
     return this.time;
-  }
-
-  addTime(time: number) {
-    const roundedTime = Math.ceil(time);
-    console.log("adding time", roundedTime);
-    this.time += Math.ceil(roundedTime);
-  }
-  addMoney(money: number) {
-    const roundedMoney = Math.ceil(money * 100) / 100;
-    console.log("adding money", roundedMoney);
-    this.money += roundedMoney;
   }
 
   saveRound(round: Round) {

@@ -1,25 +1,22 @@
 import { IQuestion, ISubject } from "../questions/IQuestions";
 
 export interface IResults {
-  money: {
-    question: number;
-    calculated: number;
-  };
+  questionValue: number;
   time: {
     remaining: number;
     started: number;
   };
   gains: {
     time: number;
-    prize: number;
+    money: number;
   };
   score: {
     money: number;
     time: number;
   };
-  nextQuestion: {
-    subject: ISubject;
-    prize: number;
+  nextQuestion?: {
+    subject?: ISubject;
+    prize?: number;
   };
 }
 
@@ -35,6 +32,7 @@ export interface InterServerEvents {
   newGame(payload: ISubject[]): void;
   playRequestQuestions: () => void;
   playRequestStartGame: () => void;
+  playNextRound: () => void;
   changeState(state: "loading" | "start"): void;
   showQuestion(question: IQuestion): void;
   showStats(results: IResults): void;

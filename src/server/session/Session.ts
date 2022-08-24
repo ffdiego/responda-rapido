@@ -18,9 +18,8 @@ export class Session {
     this.game = new Game(this);
   }
 
-  async gameLoop() {
-    this.gameRunning = true;
-    while (this.gameRunning && this.game.roundNumber <= 15) {
+  async playOneRound() {
+    if (this.game.roundNumber <= 15) {
       console.log("[SESSION] starting round", this.game.roundNumber);
       this.game.startRound();
       await Promise.race([
@@ -33,9 +32,6 @@ export class Session {
       await sleep(3000);
       console.log("[SESSION] show stats");
       this.game.showStats();
-      await sleep(3000);
-      console.log("[SESSION] next round");
-      this.game.goToNextRound();
     }
   }
 
