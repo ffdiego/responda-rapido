@@ -45,6 +45,7 @@ export class EventsHandler {
     });
     socket.on("playNextRound", () => {
       this.session.game.goToNextRound();
+      session.playOneRound();
     });
     socket.on("playerAnswer", (answer) => {
       if (session.game.currentRound) {

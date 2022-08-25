@@ -10,28 +10,6 @@ export function ResultsScreen({
   data?: IResults;
   handleRequestNewRound: () => void;
 }) {
-  if (!data) {
-    data = {
-      questionValue: 1500,
-      time: {
-        remaining: 25,
-        started: 30,
-      },
-      gains: {
-        money: 1250,
-        time: 5,
-      },
-      score: {
-        money: 3423.66,
-        time: 25,
-      },
-      nextQuestion: {
-        subject: "INGLES",
-        prize: 666000,
-      },
-    };
-  }
-
   return (
     <main className="animate-fade-in">
       <TitleBar text="Resultados" />
@@ -40,30 +18,32 @@ export function ResultsScreen({
           <div className="pb-2">
             <p className="w-full font-semibold">Ganhos:</p>
             <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_1s_both] flex items-center justify-center text-normal border rounded-lg mb-2 py-2">
-              R${data.questionValue} ×
+              R${data?.questionValue} ×
               <div className="inline-block mx-2">
-                <span className="block border-b-2">{data.time.remaining}s</span>
-                <span className="block">{data.time.started}s</span>
+                <span className="block border-b-2">
+                  {data?.time.remaining}s
+                </span>
+                <span className="block">{data?.time.started}s</span>
               </div>
-              =<b className="ml-2">R${data.gains.money}</b>
+              =<b className="ml-2">R${data?.gains.money}</b>
             </div>
             <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_2s_both] border rounded-lg py-2">
               <div className="text-xl text-center ">
                 <BsStopwatch className="inline mx-1" />
-                {data.gains.time > 0 ? "+" : "-"}
-                <b>{Math.abs(data.gains.time)}s</b>
+                {data && data.gains.time > 0 ? "+" : "-"}
+                <b>{Math.abs(data?.gains.time || 0)}s</b>
                 <p className="text-sm">
-                  {data.gains.time > 0 ? "(Acertou)" : "(Errou)"}
+                  {data && data.gains.time > 0 ? "(Acertou)" : "(Errou)"}
                 </p>
               </div>
             </div>
           </div>
           <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_3s_both] flex flex-col text-center border-4 rounded-xl text-xl py-2 bg-orange-600 font-semibold">
             <p className="w-full font-normal">Sua pontuação agora:</p>
-            <p className="font-semibold">R${data.score.money}</p>
+            <p className="font-semibold">R${data?.score.money}</p>
             <p>
               <BsStopwatch className="inline mr-1" />
-              {data.score.time}s
+              {data?.score.time}s
             </p>
           </div>
         </div>
@@ -71,11 +51,11 @@ export function ResultsScreen({
           <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_4s_both]">
             <p className="w-full">Prepare-se!</p>
             <p>
-              Pergunta de <b>{data.nextQuestion?.subject}</b>,
+              Pergunta de <b>{data?.nextQuestion?.subject}</b>,
             </p>
             <p>
               valendo R$
-              {Math.round(data.nextQuestion?.prize || 0 / 1000)} Mil!
+              {Math.round(data?.nextQuestion?.prize || 0 / 1000)} Mil!
             </p>
           </div>
         </div>

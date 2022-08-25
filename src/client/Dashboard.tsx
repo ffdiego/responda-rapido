@@ -42,7 +42,7 @@ function Sala({ score, subjects }: { score: number; subjects: ISubject[] }) {
           R${score}
         </p>
         <button className="text-lg bg-color3 p-2 px-4 rounded-xl">
-          Entrar
+          Ver estatísticas
         </button>
       </div>
       <p className="text-right mt-2">{subjects.toString()}</p>

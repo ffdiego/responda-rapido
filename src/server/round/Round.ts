@@ -87,15 +87,15 @@ export class Round {
       questionValue: this.questionValue,
       gains: {
         money: Math.ceil(prize.money * 100) / 100,
-        time: Math.ceil(prize.time - timeSpent),
+        time: prize.time,
       },
       score: {
         money: this.game.money + Math.ceil(prize.money * 100) / 100,
         time: this.game.time + Math.ceil(prize.time - timeSpent),
       },
       time: {
-        remaining: this.game.time + Math.ceil(prize.time - timeSpent),
-        started: this.game.time + Math.ceil(prize.time),
+        remaining: Math.ceil(this.game.time - timeSpent),
+        started: this.game.time,
       },
       nextQuestion:
         this.game.roundNumber + 1 <= 15
@@ -105,6 +105,7 @@ export class Round {
             }
           : undefined,
     };
+    console.log(this.result);
     this.game.roundEnded = true;
   }
 }
