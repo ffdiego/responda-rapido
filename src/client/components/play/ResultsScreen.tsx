@@ -10,6 +10,8 @@ export function ResultsScreen({
   data?: IResults;
   handleRequestNewRound: () => void;
 }) {
+  const finalQuestion = data?.nextQuestion?.prize === 1e6;
+
   return (
     <main className="animate-fade-in">
       <TitleBar text="Resultados" />
@@ -17,7 +19,7 @@ export function ResultsScreen({
         <div className="p-2 text-lg">
           <div className="pb-2">
             <p className="w-full font-semibold">Ganhos:</p>
-            <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_1s_both] flex items-center justify-center text-normal border rounded-lg mb-2 py-2">
+            <div className="animate-[fadeInFromLeft_300ms_ease-in-out_1_500ms_both] flex items-center justify-center text-normal border rounded-lg mb-2 py-2">
               R${data?.questionValue} ×
               <div className="inline-block mx-2">
                 <span className="block border-b-2">
@@ -27,7 +29,7 @@ export function ResultsScreen({
               </div>
               =<b className="ml-2">R${data?.gains.money}</b>
             </div>
-            <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_2s_both] border rounded-lg py-2">
+            <div className="animate-[fadeInFromLeft_300ms_ease-in-out_1_1s_both] border rounded-lg py-2">
               <div className="text-xl text-center ">
                 <BsStopwatch className="inline mx-1" />
                 {data && data.gains.time > 0 ? "+" : "-"}
@@ -38,9 +40,11 @@ export function ResultsScreen({
               </div>
             </div>
           </div>
-          <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_3s_both] flex flex-col text-center border-4 rounded-xl text-xl py-2 bg-orange-600 font-semibold">
+          <div className="animate-[fadeInFromLeft_300ms_ease-in-out_1_1500ms_both] flex flex-col text-center border-4 rounded-xl text-xl py-2 bg-orange-600 font-semibold">
             <p className="w-full font-normal">Sua pontuação agora:</p>
-            <p className="font-semibold">R${data?.score.money}</p>
+            <p className="font-semibold">
+              R${data?.score.money.toLocaleString()}
+            </p>
             <p>
               <BsStopwatch className="inline mr-1" />
               {data?.score.time}s
@@ -48,20 +52,28 @@ export function ResultsScreen({
           </div>
         </div>
         <div className="border-b-4 border-color3 w-full text-left pb-2 px-4">
-          <div className="animate-[fadeInFromLeft_500ms_ease-in-out_1_4s_both]">
+          <div className="animate-[fadeInFromLeft_300ms_ease-in-out_1_2s_both]">
             <p className="w-full">Prepare-se!</p>
             <p>
               Pergunta de <b>{data?.nextQuestion?.subject}</b>,
             </p>
             <p>
-              valendo R$
-              {Math.round(data?.nextQuestion?.prize || 0 / 1000)} Mil!
+              valendo:{" "}
+              {finalQuestion ? (
+                <span className="font-extrabold text-lg bg-orange-600 p-2 rounded-2xl">
+                  R$1 MILHÃO
+                </span>
+              ) : (
+                <span className="font-bold">
+                  R${Math.round((data?.nextQuestion?.prize || 0) / 1000)} Mil
+                </span>
+              )}
             </p>
           </div>
         </div>
         <div className="text-right p-2">
           <WhiteButton onClick={handleRequestNewRound}>
-            Estou pronto!
+            {finalQuestion ? "Finalizar" : "Estou pronto!"}
           </WhiteButton>
         </div>
       </div>

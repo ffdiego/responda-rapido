@@ -29,7 +29,7 @@ export function WhiteButton({
 }) {
   return (
     <button
-      className="text-lg font-semibold bg-white border-2 border-color3 p-2 px-4 rounded-xl text-black hover:bg-gray-300 duration-300"
+      className="text-lg font-semibold bg-white border-2 border-color3 p-2 px-4 rounded-xl text-black hover:bg-gray-300 hover:rounded-2xl duration-300 active:translate-x-0.5 active:translate-y-0.5"
       onClick={onClick}
     >
       {children}
