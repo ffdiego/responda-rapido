@@ -74,28 +74,19 @@ code {
 }
 
 .toast-dropdown {
-  animation-name: dropdown, fadeout;
+  animation-name: fadein;
   animation-duration: 500ms;
-  animation-delay: 0s, 2s;
-  animation-fill-mode: forwards;
+  animation-delay: 0s;
+  animation-direction: alternate;
   animation-timing-function: cubic-bezier(0.51, 1.99, 0.46, 0.86);
   animation-iteration-count: 1;
 }
 
-@keyframes dropdown {
+@keyframes fadein {
   from {
-    transform: translateY(-500%) scale(0);
-  }
-  to {
-    transform: translateY(0) scale(1);
-  }
-}
-
-@keyframes fadeout {
-  from {
-    transform: scale(1);
-  }
-  to {
     transform: scale(0);
+  }
+  to {
+    transform: scale(1);
   }
 }

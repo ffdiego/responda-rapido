@@ -4,11 +4,9 @@ import {
   QuestionScreen,
   ResultsScreen,
   ToastMessage,
-} from "./components/play";
+} from "../components/play";
 import { useEffect, useState, useContext } from "react";
-import { Container } from "./components/container";
-import SocketContext from "./socket/context";
-import { useNavigate } from "react-router-dom";
+import { Container } from "../components/container";
 import { IHighlight, IResults } from "../server/events/IEvents";
 import { IQuestion } from "../server/questions/IQuestions";
 
@@ -26,55 +24,17 @@ function Play() {
   const [question, setQuestion] = useState<IQuestion>({ Pergunta: "Teste" });
   const [flash, setFlash] = useState<IHighlight>({});
   const [resultsData, setResultsData] = useState<IResults>();
-  const navigate = useNavigate();
-
-  const socket = useContext(SocketContext);
-
-  useEffect(() => {
-    socket?.emit("playRequestQuestions");
-    socket?.on("redirect", (page) => {
-      navigate(page);
-    });
-    socket?.on("changeState", (state) => {
-      if (state === "loading") {
-        setScreen(0);
-      } else if (state === "start") {
-        setScreen(1);
-      }
-    });
-    socket?.on("showQuestion", (question) => {
-      setScreen(2);
-      setQuestion(question);
-    });
-    socket?.on("showStats", (results) => {
-      setScreen(3);
-      setResultsData(results);
-    });
-    socket?.on("highlight", (payload: IHighlight) => {
-      setFlash(payload);
-    });
-    socket?.on("toasterMessage", (message) => {
-      setMessage(message);
-      setTimeout(() => {
-        setMessage("");
-      }, 2000);
-    });
-
-    return () => {
-      socket?.off();
-    };
-  }, [socket]);
 
   function handleStartGame() {
-    socket?.emit("playRequestStartGame");
+    //socket?.emit("playRequestStartGame");
   }
 
   function handleChoseAlternative(n: number) {
-    socket?.emit("playerAnswer", n);
+    //socket?.emit("playerAnswer", n);
   }
 
   function handleRequestNewRound() {
-    socket?.emit("playNextRound");
+    //socket?.emit("playNextRound");
   }
 
   return (

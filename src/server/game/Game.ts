@@ -33,6 +33,7 @@ export class Game {
     const stats = this.currentRound?.result;
     if (!stats) throw new Error("Error retrieving stats!");
     this.session.event.emitStats(stats);
+    this.session.event.setClock(stats.score.time);
   }
 
   goToNextRound() {

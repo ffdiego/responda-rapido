@@ -1,23 +1,21 @@
-import { AnimalChoice } from "./components/lobby";
-import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import SocketContext from "./socket/context";
+import { AnimalChoice } from "../components/lobby";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Layout() {
   return <Login />;
 }
 
 function Login() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
-  const socket = useContext(SocketContext);
 
   useEffect(() => {
     const localName = localStorage.getItem("rr-name");
     const localAvatar = localStorage.getItem("rr-avatar");
     if (localName) setName(localName);
-    if (localAvatar) navigate("/dash");
+    if (localAvatar) router.push("/");
   }, []);
 
   function handlePlayButton() {
@@ -27,12 +25,12 @@ function Login() {
       avatar,
       uuid: localStorage.getItem("uuid"),
     };
-    socket?.emit("play", payload);
+    //socket?.emit("play", payload);
 
     localStorage.setItem("rr-name", name);
     localStorage.setItem("rr-avatar", avatar);
 
-    navigate("/dash");
+    router.push("/dash");
   }
 
   return (

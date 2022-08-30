@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Container, Container as div } from "./components/container";
-import { Subjects } from "./components/newgame";
-import { TitleBar, Footer } from "./components/edges";
-import SocketContext from "./socket/context";
+import { useState } from "react";
+
+import { Container } from "../components/container";
+import { Subjects } from "../components/newgame";
+import { TitleBar, Footer } from "../components/edges";
+
 import { ISubject } from "../server/questions/IQuestions";
 
 export default function Layout() {
@@ -17,14 +17,6 @@ export default function Layout() {
 
 function NewGame() {
   const [subjects, setSubjects] = useState<ISubject[]>([]);
-  const socket = useContext(SocketContext);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    socket?.on("redirect", (payload) => {
-      navigate(payload);
-    });
-  }, [socket]);
 
   useEffect(() => {
     setSubjects(JSON.parse(localStorage.getItem("rr-materias") || ""));
@@ -41,7 +33,6 @@ function NewGame() {
   function handlePlayButton() {
     localStorage.setItem("rr-materias", JSON.stringify(subjects));
     console.log("vou jogar!", subjects);
-    socket?.emit("newGame", subjects);
   }
 
   return (

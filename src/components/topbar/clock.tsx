@@ -1,32 +1,26 @@
 import { useEffect, useState } from "react";
 import { BsStopwatch } from "react-icons/bs";
-import { Socket } from "socket.io-client";
-import { InterServerEvents } from "../../../server/events/IEvents";
 
-export function Clock({
-  socket,
-}: {
-  socket: Socket<InterServerEvents> | null;
-}) {
+export function Clock() {
   const [time, setTime] = useState(30);
   const [clockPause, setClockPause] = useState(true);
 
-  useEffect(() => {
-    console.log("clock registered");
-    socket?.on("clockSet", (time) => {
-      console.log("received clockSet", time);
-      setTime(time);
-    });
-    socket?.on("clockPause", (bool) => {
-      console.log("received bool", bool, "to change clock status");
-      setClockPause(bool);
-    });
-
-    () => {
-      socket?.off("clockSet");
-      socket?.off("clockPause");
-    };
-  }, [socket]);
+  //useEffect(() => {
+  //  console.log("clock registered");
+  //  socket?.on("clockSet", (time) => {
+  //    console.log("received clockSet", time);
+  //    setTime(time);
+  //  });
+  //  socket?.on("clockPause", (bool) => {
+  //    console.log("received bool", bool, "to change clock status");
+  //    setClockPause(bool);
+  //  });
+  //
+  //  () => {
+  //    socket?.off("clockSet");
+  //    socket?.off("clockPause");
+  //  };
+  //}, [socket]);
 
   useEffect(() => {
     const timer = setInterval(() => {

@@ -1,7 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
-import { useNavigate, useLocation } from "react-router-dom";
-import SocketContext from "../../socket/context";
 import { Clock } from "./clock";
 import { Modal } from "./modal";
 
@@ -9,9 +7,6 @@ export default function TopBar() {
   const [name, setName] = useState("");
 
   const [modalOpen, setModalOpen] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const socket = useContext(SocketContext);
 
   useEffect(() => {
     const localName = localStorage.getItem("rr-name");
@@ -24,14 +19,14 @@ export default function TopBar() {
   }
 
   function handleExitButton() {
-    if (location.pathname === "/dash") {
-      localStorage.removeItem("rr-avatar");
-      navigate("/");
-    }
-    if (location.pathname === "/play") {
-      socket?.emit("leaveGame");
-      navigate("/dash");
-    }
+    //if (location.pathname === "/dash") {
+    //  localStorage.removeItem("rr-avatar");
+    //  navigate("/");
+    //}
+    //if (location.pathname === "/play") {
+    //  socket?.emit("leaveGame");
+    //  navigate("/dash");
+    //}
   }
 
   return (
@@ -45,7 +40,7 @@ export default function TopBar() {
             <BiArrowBack className="text-xl text-white " />
           </div>
           <h3 className="text-2xl">{name}</h3>
-          <Clock socket={socket} />
+          <Clock />
         </div>
       </header>
       {modalOpen && (

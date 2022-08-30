@@ -66,7 +66,7 @@ export class Round {
       this.game.session.event.highlight({
         color: "green",
         alternative: this.chosenAnswer,
-        blink: true,
+        blink: false,
       });
       prize.money =
         Prize(this.game.roundNumber) * (1 - timeSpent / this.game.time);
@@ -74,7 +74,9 @@ export class Round {
     }
     //Errou
     else {
-      this.game.session.event.showToasterMessage("Errou!");
+      this.game.session.event.showToasterMessage(
+        this.chosenAnswer ? "Errou!" : "Acabou o tempo!"
+      );
       this.game.session.event.highlight({
         color: "red",
         alternative: this.question.Certa,
