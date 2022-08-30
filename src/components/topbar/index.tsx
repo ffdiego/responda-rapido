@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { BiArrowBack } from "react-icons/bi";
+import { OrangeButton, WhiteButton } from "../buttons";
 import { Clock } from "./clock";
-import { Modal } from "./modal";
 
 export default function TopBar() {
   const [name, setName] = useState("");
 
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(true);
 
   useEffect(() => {
     const localName = localStorage.getItem("rr-name");
@@ -30,8 +30,8 @@ export default function TopBar() {
   }
 
   return (
-    <>
-      <header className="box-border bg-color3 my-2 mb-4 py-2 px-1 rounded-xl text-white drop-shadow-lg">
+    <div className="relative mb-2">
+      <header className="relative box-border bg-color3 mt-2 py-2 px-1 rounded-xl text-white drop-shadow-lg z-20 ">
         <div className="flex justify-between items-center font-bold px-2">
           <div
             className="p-2 px-4 bg-white bg-opacity-10 rounded-md hover:bg-opacity-30 duration-300 cursor-pointer"
@@ -43,12 +43,19 @@ export default function TopBar() {
           <Clock />
         </div>
       </header>
-      {modalOpen && (
-        <Modal
-          handleExitButton={handleExitButton}
-          setModalOpen={setModalOpen}
-        />
-      )}
-    </>
+      <div
+        className={`absolute -mt-2 p-2 w-full border-orange-600 border-4 border-t-0 rounded-b-xl z-0 overflow-hidden transition-all duration-500 ease-in-out ${
+          modalOpen ? "h-28 bg-color3" : "h-0 pt-0 bg-color3"
+        }`}
+      >
+        <p className="text-center text-white font-semibold my-2">
+          Tem certeza que deseja sair?
+        </p>
+        <div className="text-center">
+          <WhiteButton onClick={handleExitButton}>Sim</WhiteButton>{" "}
+          <OrangeButton onClick={() => setModalOpen(false)}>Não</OrangeButton>
+        </div>
+      </div>
+    </div>
   );
 }
