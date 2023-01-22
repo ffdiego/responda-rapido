@@ -15,7 +15,7 @@ export default function TopBar() {
   }, []);
 
   function handleBackButton() {
-    setModalOpen(true);
+    setModalOpen((v) => !v);
   }
 
   function handleExitButton() {
@@ -44,7 +44,7 @@ export default function TopBar() {
         </div>
       </header>
       <div
-        className={`absolute -mt-2 p-2 w-full border-orange-600 border-4 border-t-0 rounded-b-xl z-0 overflow-hidden transition-all duration-500 ease-in-out ${
+        className={`absolute -mt-2 p-2 w-full border-orange-600 border-4 border-t-0 rounded-b-xl z-0 overflow-hidden transition-all duration-500 ${
           modalOpen ? "h-28 bg-color3" : "h-0 pt-0 bg-color3"
         }`}
       >

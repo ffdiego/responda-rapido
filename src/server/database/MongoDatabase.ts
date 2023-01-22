@@ -19,7 +19,7 @@ export class MongoDatabase implements IDatabase {
     dificuldade: IDificuldade
   ): Promise<IQuestion[]> {
     const perguntas = await perguntaModel.aggregate([
-      { $match: { Materia: { $in: subjects } } },
+      { $match: { Materia: { $eq: subjects } } },
       { $match: { Dificuldade: dificuldade } },
       { $sample: { size: N } },
     ]);
